@@ -1,0 +1,38 @@
+:root {
+  --footer-font-size: 20px;
+  --footer-powerby-font-size:15px;
+  --scroll-bar-width: 5px;
+}
+
+.footer {
+  font-size: var(--footer-font-size);
+}
+
+.footer-social {
+  font-size: var(--footer-font-size);
+}
+
+.powerby {
+  font-size: var(--footer-powerby-font-size);
+}
+
+::-webkit-scrollbar{
+    height: auto;
+    width: var(--scroll-bar-width);
+  }
+  
+::-webkit-scrollbar-thumb{
+  background-color: hsla(0, 0%, 69%, 0.4);
+  border-radius: calc(var(--scroll-bar-width) /2);
+}
+::-webkit-scrollbar-thumb:hover{
+  background-color: hsla(0, 0%, 69%, 0.8);
+}
+
+::-webkit-scrollbar-track{
+  background-color: transparent;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

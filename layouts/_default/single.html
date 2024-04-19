@@ -1,0 +1,35 @@
+{{ define "main" }}
+<div class="container mx-auto w-full max-w-4xl lg:max-w-5xl">
+  <div class="flex flex-col gap-y-3 p-6 mt-6 mx-2 md:mx-0">
+    <h1 class="text-4xl font-semibold text-slate-800 dark:text-slate-100">
+      <a href="{{ .RelPermalink }}">{{ .Title | .RenderString }}</a>
+    </h1>
+
+    {{ with .Description }}
+    <h2 class="mt-4 mb-2 text-xl font-serif text-slate-600 dark:text-slate-300">
+      {{ . | $.Page.RenderString }}
+    </h2>
+    {{ end }}
+
+    <div class="py-2">
+      {{ partial "time.html" . }}
+      {{ partial "taxonomies.html" .}}
+    </div>
+
+
+    {{ if or .Params.Toc $.Site.Params.Toc }}
+      {{ if ne .Params.Toc false }}
+      <section class="prose prose-slate dark:prose-invert w-full max-w-4xl lg:max-w-5xl mt-6">
+        <h2>Table of Contents</h2>
+        <aside>{{ .TableOfContents }}</aside>
+      </section>
+      {{ end }}
+    {{ end }}
+
+    <article class="mt-6 w-full max-w-4xl lg:max-w-5xl prose prose-slate dark:prose-invert prose-quoteless post-content">
+      {{ .Content | safeHTML }}
+    </article>
+
+  </div>
+</div>
+{{ end }}

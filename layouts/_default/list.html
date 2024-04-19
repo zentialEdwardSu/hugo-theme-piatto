@@ -1,0 +1,56 @@
+{{ define "main" }}
+<div class="container mx-auto pb-4">
+  <div class="pt-20 pb-10 mx-4 w-full lg:w-[580px] prose dark:prose-invert h-fit">
+    <h1 class="mb-4 text-5xl font-bold text-slate-800 dark:text-slate-200">{{ .Title }}</h1>
+    <p class="text-2xl font-serif">{{ .Description }}</p>
+  </div>
+
+  {{ $prevYear := "" }}
+  <ul>
+    {{ range .Pages.ByPublishDate.Reverse }}
+    {{ $currentYear := .Date.Format "2006" }}
+
+    {{ if ne $currentYear $prevYear }}
+        <h2 class="mx-4 text-4xl font-bold font-mono py-4 text-slate-800 dark:text-slate-200" id="{{ $currentYear }}">{{ $currentYear }}</h2>
+        {{ $prevYear = $currentYear }}
+    {{ end }}
+    <div class="group hover:bg-slate-200 dark:hover:bg-slate-700 py-4 rounded-lg">
+      <a href="{{.Permalink}}" class="">
+        <li class=" mx-4 ">
+          <h3 class="text-2xl text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:hover:text-slate-200">{{ .Title | .RenderString }}</h3>
+          <div class="my-2 text-lg font-medium text-slate-300 dark:text-slate-400 group-hover:text-slate-500 dark:hover:text-slate-300">
+          
+            {{ with .Description }}
+              {{ . | $.Page.RenderString }}
+            {{ else }}
+            {{ with .Summary }}
+              {{ . | $.Page.RenderString }}
+            {{ end }}
+          </div>
+          {{ end }}
+
+          <div id="date_and_readtime" class="text-sm flex flex-col gap-y-1 md:flex-row md:gap-y-0 md:gap-x-4 text-slate-300 dark:text-slate-400 group-hover:text-slate-500 dark:hover:text-slate-300">
+            {{- if .Date }}
+              {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+              {{ $dateHuman := .Date.Format ($.Site.Params.DateFormatList | default "Jan 01") }}
+              <div class="flex flex-row text-base gap-x-1">
+                <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+                {{- if $.Site.Params.showReadingTime }}
+                  <div class="text-base gap-x-1">
+                    <span> · {{ .ReadingTime }}min</span>
+                  </div>
+                {{ end -}}
+              </div>
+            {{ end -}}
+          </div>
+          
+          <div class="py-2.5">
+            {{partial "taxonomies.html" .}}
+          </div>
+        </li>
+      </a>
+    </div>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

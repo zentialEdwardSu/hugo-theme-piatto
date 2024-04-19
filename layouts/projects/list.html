@@ -1,0 +1,45 @@
+{{ define "main" }}
+
+<main class="container mx-auto pb-6 w-full">
+  <div class="mx-4 pt-20 pb-10 w-full lg:w-[580px] prose dark:prose-invert h-fit">
+    <h1 class="mb-4 text-5xl font-bold ">{{ .Title }}</h1>
+    <p class="text-3xl">{{ .Description }}</p>
+  </div>
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 pb-6 w-full mx-auto flex-col">
+    {{ range $index, $stack := .Site.Data.projects }}
+    <a href="{{ .link }}" target="_blank" rel="noopener noreferrer"
+      class="flex items-center gap-2.5 p-4 rounded hover:bg-slate-200 dark:hover:bg-slate-700 group">
+      {{ if .icon }}
+      <img src="{{ .icon }}" alt="{{ .name }}" class="w-20 h-20 aspect-square" />
+      {{ else }}
+      <!-- Generate logo with Capital letter -->
+      <div
+        class="w-20 h-20 text-7xl uppercase grid place-items-center p-4 rounded bg-slate-500 text-white group-hover:text-slate-200 dark:text-slate-900 dark:group-hover:text-slate-700 font-bold">
+        <span class="mt-2 ml-2">{{ substr .name 0 1 }}</span>
+      </div>
+      {{ end }}
+      <div >
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-50">{{ .name }}</h2>
+        <!-- Status Badge -->
+        <div class="my-1">
+          {{ if .status }}
+            {{ partial "status.html" .status}}
+          {{ else }}
+            <img alt="Static Badge" src="https://img.shields.io/badge/NoStatus-565656">
+          {{ end}}
+        </div>
+        {{ if .description }}
+        <p class="text-slate-400 dark:text-slate-500 line-clamp-2">{{ .description }}</p>
+        {{ end }}
+        {{ range .tag }}
+          <p class="text-slate-500 text-xs mt-1 px-1.5 py-0.5 rounded-full border border-slate-300 dark:border-slate-600 inline-block">
+            #{{. }}
+          </p>
+        {{ end }}
+      </div>
+    </a>
+    {{ end }}
+  </div>
+</main>
+
+{{ end }}

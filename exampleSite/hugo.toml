@@ -1,0 +1,55 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Piattos example site '
+theme = "hugo-theme-piatto"
+copyright = "EdwardSu ©"
+
+
+[params]
+  name = "EdwardSu"
+  description = "Loafer and bug producer."
+  initials = "Ed"
+  footercd = true
+  showReadingTime=true
+
+  [[params.social]]
+    name = "Twitter"
+    link = "#"
+    icon = "ti ti-brand-x"
+
+  [[params.social]]
+    name = "Github"
+    link = "#"
+    icon = "ti ti-brand-github"
+
+  [[params.social]]
+    name = "Mail" 
+    link = "#"
+    icon = "ti ti-mail"
+
+  [[params.social]]
+    name = "LinkedIn"
+    link = "#"
+    icon = "ti ti-brand-linkedin"
+
+[menu]
+  [[menu.main]]
+    name = "Articles"
+    url = "/articles/"
+    weight = 1
+  [[menu.main]]
+    name = "Projects"
+    url = "/projects/"
+    weight = 2
+  [[menu.main]]
+    name = "Me"
+    url = "/me/"
+    weight = 3
+
+# syntax highlight settings
+[markup]
+  [markup.highlight]
+    style = "dracula"
+  [markup.goldmark.renderer]
+    # Enable to include inline HTML
+    unsafe = true

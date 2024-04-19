@@ -1,0 +1,15 @@
+{{ with . }}
+    {{ if eq "Planning" . }}
+    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Planning-1A5276">
+    {{ else if eq "Working" . }}
+    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Working-196F3D">
+    {{ else if eq "Pending" . }}
+    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Pending-B7950B">
+    {{ else if eq "Done" . }}
+    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Done-0E6655">
+    {{ else if eq "Canceled" . }}
+    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Canceled-922B21">
+    {{ else }}
+    <img alt="Static Badge" src="https://img.shields.io/badge/{{ . }}">
+    {{ end }}
+{{ end }}
