@@ -27,3 +27,5 @@ About me and other format of me.
 "Mine" is also a possessive form of "Me," but it is used when the speaker wants to emphasize ownership strongly. It often follows a noun or is used alone as a pronoun. For example:
 - The blue car is mine.
 - Is this book yours or mine?
+
+<i class="ti ti-alert-circle"></i>
