@@ -1,0 +1,68 @@
+Submodule assets/iconfonts contains modified content
+diff --git a/assets/iconfonts/.build/helpers.mjs b/assets/iconfonts/.build/helpers.mjs
+index b50838edd..3b4bc8802 100644
+--- a/assets/iconfonts/.build/helpers.mjs
++++ b/assets/iconfonts/.build/helpers.mjs
+@@ -422,16 +422,16 @@ export const printChangelog = function (newIcons, modifiedIcons, renamedIcons, p
+   console.log('');
+ };
+ 
+-export const getCompileOptions = () => {
++export const getCompileOptions = (compileOptionsPath) => {
+   const compileOptions = {
+     includeIcons: [],
+     strokeWidth: null,
+     fontForge: 'fontforge',
+   };
+ 
+-  if (fs.existsSync('../compile-options.json')) {
++  if (fs.existsSync(compileOptionsPath)) {
+     try {
+-      const tempOptions = JSON.parse(fs.readFileSync('../compile-options.json').toString());
++      const tempOptions = JSON.parse(fs.readFileSync(compileOptionsPath).toString());
+ 
+       if (typeof tempOptions !== 'object') {
+         throw 'Compile options file does not contain an json object';
+@@ -497,6 +497,8 @@ export const getCompileOptions = () => {
+     } catch (error) {
+       throw `Error reading compile-options.json: ${error}`;
+     }
++  } else {
++    console.log("Compile options not found at",compileOptionsPath)
+   }
+ 
+   return compileOptions;
+diff --git a/assets/iconfonts/packages/icons-webfont/.build/build-outline.mjs b/assets/iconfonts/packages/icons-webfont/.build/build-outline.mjs
+index 972a1f136..ac46b0bd8 100644
+--- a/assets/iconfonts/packages/icons-webfont/.build/build-outline.mjs
++++ b/assets/iconfonts/packages/icons-webfont/.build/build-outline.mjs
+@@ -5,6 +5,7 @@ import { resolve, basename } from 'path'
+ import crypto from 'crypto'
+ import { glob } from 'glob'
+ import { execSync } from 'child_process'
++import { cwd } from 'process'
+ 
+ const DIR = getPackageDir('icons-webfont')
+ 
+@@ -12,17 +13,18 @@ const buildOutline = async () => {
+   let filesList = {}
+   const icons = getAllIcons(true)
+ 
+-  const compileOptions = getCompileOptions()
++  const compileOptions = getCompileOptions(cwd()+"/compile-options.json")
++  console.log("Using",compileOptions)
+ 
+   await asyncForEach(Object.entries(icons), async ([type, icons]) => {
+     fs.mkdirSync(resolve(DIR, `icons-outlined/${type}`), { recursive: true })
+     filesList[type] = []
+ 
+     await asyncForEach(icons, async function ({ name, content, unicode }) {
+-      console.log(type, name);
++      // console.log(type, name);
+ 
+       if (compileOptions.includeIcons.length === 0 || compileOptions.includeIcons.indexOf(name) >= 0) {
+-
++        console.log(type, name,"Will be included");
+         if (unicode) {
+           console.log('Stroke for:', name, unicode)
+ 
