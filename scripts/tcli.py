@@ -4,6 +4,7 @@ from typing import List
 from pathlib import Path
 import time
 import typer
+import json
 
 app = typer.Typer()
 state = {"verbose": False}
@@ -20,19 +21,26 @@ def main(verbose: Annotated[bool ,typer.Option("-v","--verbose",help="Verbose ou
 
 @app.command(help="Minify the tabler.min.css")
 def trim(
-        paths: Annotated[List[Path], typer.Argument(help="Path of the to-be-match-ti-class floder, can be mutiple floder")],
+        paths: Annotated[List[Path], typer.Argument(help="Path of the to-be-match-ti-class floder, can be mutiple floder.")],
         input_path:Annotated[Path,typer.Option("-i","--input_path",
-                                               help="Path for tabler-icons.min.cs",
+                                               help="Path for tabler-icons.min.cs.",
                                                )] = "assets/css/tabler-icons.min.css",
         output_path:Annotated[Path,typer.Option("-o","--output_path",
-                                               help="Path for trimed tabler-icons.min.cs",
+                                               help="Path for trimed tabler-icons.min.cs.",
                                                )] = "static/css/tabler-icons.min.css",
+        output_font_compile_options: Annotated[Path,typer.Option(
+            "--co_out_path",
+            help="Export the info for compiling tabler icon fonts."
+        )] = None,
         watch_interval:Annotated[float,typer.Option("-w","--watch",
-                                               help="Watch files in paths, synchronize ticlass changes at intervals(seconds)",
+                                               help="Watch files in paths, synchronize ticlass changes at intervals(seconds).",
                                                )] = -1,
     ):
-    pattern="ti ti(-\w+)*"
+    pattern=r"ti ti(-\w+)*"
     old_l = []
+    compile_options = {
+        "includeIcons":[]
+    }
     if watch_interval > 0:
         typer.echo(f"Start to watch on {paths}")
     while True:
@@ -41,14 +49,19 @@ def trim(
         for path in paths:
             l+=find_strings_in_files(path,pattern,name_only=True,verbose=state["verbose"])
 
-        # reshape remove ti
+        # reshape and remove ti
         l = [i.split(" ")[1] for i in l]
         if state["verbose"]:
             print(l)
 
         if l != old_l:
-            minify_css(input_path,output_path,l)
+            new_css_meta = minify_css(input_path,output_path,l,verbose=state["verbose"])
             typer.echo(f"These new classes {[x for x in l if not x in old_l]} are synced to {output_path}")
+            compile_options["includeIcons"] =[code[3:] for code in l] # remove ti- prefix
+            if output_font_compile_options:
+                typer.echo(f"Compile options: {compile_options} generate at {output_font_compile_options}")
+                with open(output_font_compile_options,'w') as jsonfd:
+                    json.dump(compile_options,jsonfd)
             old_l = l
 
         if watch_interval < 0:
@@ -66,7 +79,7 @@ def match(
         ):
     if paths == []:
         paths = ['./']
-    pattern="ti ti(-\w+)*"
+    pattern=r"ti ti(-\w+)*"
     for path in paths:
         typer.echo(f"Matching under {path}")
         m = find_strings_in_files(path,pattern,name_only,state["verbose"])
