@@ -1,7 +1,7 @@
 # todo
 
-- [ ] some dark:style need to be changed
-- [ ] add metadata
-- [ ] hint support
-- [ ] Columns support
-- [ ] h with anchor
+- [ ] add meta for SEO
+- [X] hint support shortcode
+- [ ] h with anchor TOC
+- [X] cover support
+- [ ] typst support

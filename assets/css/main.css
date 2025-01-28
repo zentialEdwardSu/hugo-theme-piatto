@@ -36,3 +36,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hint {
+  @apply py-0.5
+}
+
+.hint-info {
+  @apply border-l-4 border-emerald-500 bg-emerald-100 
+}
+
+.hint-warning {
+  @apply border-l-4 border-amber-500 bg-amber-100 
+}
+
+.hint-danger {
+  @apply border-l-4 border-red-500 bg-red-100 
+}

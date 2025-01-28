@@ -31,6 +31,9 @@ Because we use tabler icons packaged as fonts, the usual font subsetting method 
 ##### 1. Install fontforge
 ##### 2. Init and update the submodule, so we have the local tabler-icons source tree
 ##### 3. Apply the patch, this make compile options avaliable for tabler-icons
+```shell
+patch -p < patch.diff
+```
 ##### 4. Run the make script
 ```shell
 make icons

@@ -11,7 +11,7 @@
     {{ $currentYear := .Date.Format "2006" }}
 
     {{ if ne $currentYear $prevYear }}
-        <h2 class="mx-4 text-4xl font-bold font-mono py-4 text-slate-800 dark:text-slate-200" id="{{ $currentYear }}">{{ $currentYear }}</h2>
+        <h2 class="mx-4 text-5xl font-bold font-mono py-4 text-slate-800 dark:text-slate-200" id="{{ $currentYear }}">{{ $currentYear }}</h2>
         {{ $prevYear = $currentYear }}
     {{ end }}
     <div class="group hover:bg-slate-200 dark:hover:bg-slate-700 py-4 rounded-lg">

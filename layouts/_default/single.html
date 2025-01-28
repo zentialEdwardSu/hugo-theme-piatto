@@ -1,6 +1,11 @@
 {{ define "main" }}
 <div class="container mx-auto w-full max-w-4xl lg:max-w-5xl">
   <div class="flex flex-col gap-y-3 p-6 mt-6 mx-2 md:mx-0">
+    {{ if .Params.cover}}
+    <div class="mx-auto">
+      <img src="{{.Params.cover}}"/>
+    </div>
+    {{ end }}
     <h1 class="text-4xl font-semibold text-slate-800 dark:text-slate-100">
       <a href="{{ .RelPermalink }}">{{ .Title | .RenderString }}</a>
     </h1>
@@ -33,5 +38,6 @@
     </article>
 
   </div>
+  <div class="h-20"></div>
 </div>
 {{ end }}

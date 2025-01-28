@@ -4,21 +4,10 @@ date: 2021-08-01
 draft: false
 project_tags: ["markdown"]
 weight: 2
-summary: "Example of markdown syntax you can use to edit your content"
+description: "Example of markdown syntax you can use to edit your content"
 categories : [
     "syntax",
 ]
-links:
-    external_link:
-        text: "Some external link"
-        icon: "fas fa-external-link-alt"
-        href: "#"
-        weight: 1
-    another_link:
-        text: "Another github link"
-        icon: "fab alt brands fa-github"
-        href: "#"
-        weight: 2
 ---
 
 This is just an intro paragraph to show how the initial letter of each article or post will look.

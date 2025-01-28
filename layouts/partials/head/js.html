@@ -15,4 +15,16 @@
   console.log("Script from js.html");
 
   SetCollpaseButton();
+  SetThemeToggle();
+
+  // Apply theme settings
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark')
+      themeToggle.checked = true
+      console.log("Apply dark")
+  } else {
+      document.documentElement.classList.remove('dark')
+      themeToggle.checked = false
+      console.log("Apply light")
+  }
 </script>
