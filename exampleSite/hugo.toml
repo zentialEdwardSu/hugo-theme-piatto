@@ -53,3 +53,8 @@ copyright = "EdwardSu ©"
   [markup.goldmark.renderer]
     # Enable to include inline HTML
     unsafe = true
+
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 1

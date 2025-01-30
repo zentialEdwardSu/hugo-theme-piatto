@@ -6,7 +6,17 @@ module.exports = {
     extend: {
       minHeight:{
         'frame': '768px'
-      }
+      },
+      screens: {
+        'xs': '345px', // for small phone
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            textAlign: 'justify',
+          },
+        },
+      },
     },
   },
   plugins: [

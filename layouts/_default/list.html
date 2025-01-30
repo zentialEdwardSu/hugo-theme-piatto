@@ -1,6 +1,6 @@
 {{ define "main" }}
 <div class="container mx-auto pb-4">
-  <div class="pt-20 pb-10 mx-4 w-full lg:w-[580px] prose dark:prose-invert h-fit">
+  <div class="pt-20 pb-10  mx-0 sm:mx-4 w-full lg:w-[580px] prose dark:prose-invert h-fit">
     <h1 class="mb-4 text-5xl font-bold text-slate-800 dark:text-slate-200">{{ .Title }}</h1>
     <p class="text-2xl font-serif">{{ .Description }}</p>
   </div>
@@ -11,12 +11,12 @@
     {{ $currentYear := .Date.Format "2006" }}
 
     {{ if ne $currentYear $prevYear }}
-        <h2 class="mx-4 text-5xl font-bold font-mono py-4 text-slate-800 dark:text-slate-200" id="{{ $currentYear }}">{{ $currentYear }}</h2>
+        <h2 class="mx-0 sm:mx-4 text-5xl font-bold font-mono py-4 text-slate-800 dark:text-slate-200" id="{{ $currentYear }}">{{ $currentYear }}</h2>
         {{ $prevYear = $currentYear }}
     {{ end }}
     <div class="group hover:bg-slate-200 dark:hover:bg-slate-700 py-4 rounded-lg">
       <a href="{{.Permalink}}" class="">
-        <li class=" mx-4 ">
+        <li class="mx-0 sm:mx-4">
           <h3 class="text-2xl text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200">{{ .Title | .RenderString }}</h3>
           <div class="my-2 text-lg font-medium text-slate-300 dark:text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-300">
           

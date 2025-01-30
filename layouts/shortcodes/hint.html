@@ -1,3 +1,6 @@
 <blockquote class="hint hint-{{ .Get 0 }}">
-    {{ .InnerDeindent | safeHTML }}
+    <div class="mt-3">
+        <b class="text-xl">{{ if .Get 1 }}{{ .Get 1 }}{{ else }}{{ .Get 0 }}{{ end }}</b>
+    </div>
+    <div class="mt-0 mb-3 pr-4">{{ .InnerDeindent | safeHTML }}</div>
 </blockquote>

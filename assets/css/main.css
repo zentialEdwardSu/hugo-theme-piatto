@@ -38,17 +38,17 @@
 @tailwind utilities;
 
 .hint {
-  @apply py-0.5
+  @apply py-0.5 dark:text-slate-800 border-l-4
 }
 
-.hint-info {
-  @apply border-l-4 border-emerald-500 bg-emerald-100 
+.hint-Info {
+  @apply  border-emerald-500 bg-emerald-100 
 }
 
-.hint-warning {
-  @apply border-l-4 border-amber-500 bg-amber-100 
+.hint-Warning {
+  @apply border-amber-500 bg-amber-100 
 }
 
-.hint-danger {
-  @apply border-l-4 border-red-500 bg-red-100 
+.hint-Danger {
+  @apply border-red-500 bg-red-100 
 }

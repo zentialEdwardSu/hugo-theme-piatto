@@ -14,20 +14,17 @@ cover: "test_cover.jpg"
 
 ## shortcodes support
 
-{{% hint info%}}
-**Info content**  
+{{% hint Info "Some other info"%}}
 Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
 stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa
 {{% /hint %}}
 
-{{% hint warning%}}
-**warn content**  
+{{% hint Warning%}}
 Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
 stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa
 {{% /hint %}}
 
-{{% hint danger%}}
-**danger content**  
+{{% hint Danger%}}  
 Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat
 stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa
 {{% /hint %}}

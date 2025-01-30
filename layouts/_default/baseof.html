@@ -3,11 +3,11 @@
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="bg-white dark:bg-gray-900 px-4 max-w-[1024px] mx-auto">
+<body class="bg-white dark:bg-gray-900 pl-1 sm:px-4 max-w-[1024px] mx-auto">
   <header>
     {{  partial "header.html" . }}
   </header>
-  <main id="content" class="min-h-frame px-8">
+  <main id="content" class="min-h-frame px-1 sm:px-8">
     {{  block "main" . }}{{ end }}
   </main>
   <footer>
