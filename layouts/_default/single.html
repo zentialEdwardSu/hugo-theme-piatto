@@ -1,5 +1,6 @@
 {{ define "main" }}
 <div class="container mx-auto w-full max-w-4xl lg:max-w-5xl">
+  <!-- show info when device is to narrow -->
   <div class="xs:hidden block rounded-lg bg-red-200 p-2 text-slate-800">
     <i class="ti ti-alert-circle"></i>
     <span class="font-bold">
@@ -34,6 +35,18 @@
         <h2 id="TocHead">Table of Contents</h2>
         <aside>{{ .TableOfContents }}</aside>
       </section>
+      <button
+        id="back-to-toc"
+        class="fixed bottom-8 right-8 py-2 px-3 bg-slate-500 text-white rounded-full shadow-lg hover:bg-slate-600 transition-colors group opacity-20 dark:opacity-80"
+        onclick="scrollToToc()"
+      >
+        <i class="ti ti-arrow-up text-lg"></i>
+        <!-- Tooltip -->
+        <span class="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-sm px-2 py-1 rounded whitespace-nowrap">
+          Back to TOC
+        </span>
+      </button>
+      {{partial "head/tocjs.html"}}
     {{ end }}
 
     <article class="mt-6 w-full max-w-4xl lg:max-w-5xl prose prose-slate dark:prose-invert prose-quoteless post-content">
@@ -41,17 +54,7 @@
     </article>
 
   </div>
-  <button
-  id="back-to-toc"
-  class="fixed bottom-8 right-8 p-2 bg-slate-500 text-white rounded-full shadow-lg hover:bg-slate-600 transition-colors group opacity-20 dark:opacity-80"
-  onclick="scrollToToc()"
-  >
-  <i class="ti ti-arrow-up text-lg"></i>
-  <!-- Tooltip -->
-  <span class="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-sm px-2 py-1 rounded whitespace-nowrap">
-    Back to TOC
-  </span>
-  </button>
+
 <div class="h-20"></div>
 </div>
 {{ end }}

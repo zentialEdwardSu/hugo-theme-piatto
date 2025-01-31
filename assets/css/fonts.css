@@ -1,0 +1,21 @@
+/* assets/css/fonts.css */
+@font-face {
+    font-family: 'Google Sans';
+    src: url("../webfonts/GoogleSans-Regular.woff2") format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+  
+ @font-face {
+    font-family: 'Google Sans';
+    src: url("../webfonts/GoogleSans-Bold.woff2" ) format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+  
+@font-face {
+    font-family: 'Google Sans';
+    src: url("../webfonts/GoogleSans-Italic.woff2") format('woff2');
+    font-weight: 400;
+    font-style: italic;
+}

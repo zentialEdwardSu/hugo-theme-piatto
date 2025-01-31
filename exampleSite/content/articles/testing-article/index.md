@@ -8,7 +8,7 @@ description: "Just for demostrate content"
 categories : [
     "test",
 ]
-cover: "test_cover.jpg"
+cover: "./images/test_cover.jpg"
 ---
 
 

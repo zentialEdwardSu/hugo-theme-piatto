@@ -37,6 +37,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply font-sans;
+}
+
 .hint {
   @apply py-0.5 dark:text-slate-800 border-l-4
 }
@@ -51,4 +55,20 @@
 
 .hint-Danger {
   @apply border-red-500 bg-red-100 
+}
+
+.searchcard {
+  @apply border-b-2 px-5 py-2 last:border-b-0
+}
+
+.cardtitle {
+  @apply text-xl
+}
+
+.carddesc {
+  @apply text-xs truncate block font-light italic
+}
+
+.hovertext {
+  @apply hover:text-blue-600 dark:hover:text-blue-300
 }

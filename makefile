@@ -1,10 +1,10 @@
 .PHONY: tailwind,hugo,clean,vercel,font
 
 tailwind-dev:
-	npx tailwindcss -i assets/css/main.css -o ./static/css/style.css --watch
+	npx tailwindcss -i assets/css/main.css -o assets/css/style.css --watch
 
 hugo-dev:
-	hugo server -s exampleSite --gc --bind 0.0.0.0 --themesDir=../..
+	hugo server -s exampleSite --gc --bind 0.0.0.0 --themesDir=../.. --disableFastRender
 
 icons-dev:
 	cp assets/devfonts/tabler-icons.woff2 static/webfonts/tabler-icons.woff2

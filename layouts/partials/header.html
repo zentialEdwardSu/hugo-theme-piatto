@@ -1,5 +1,5 @@
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
-    <div class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto py-3">
+    <div class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto py-4 px-2 md:px-0">
         <a href="{{ .Site.BaseURL }}" class="flex items-center rtl:space-x-reverse">
             {{ if .Site.Params.Initials }}
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{{ .Site.Params.Initials }}</span>
@@ -18,10 +18,10 @@
                 {{- $currentPage := . -}}
                 {{ range .Site.Menus.main -}}
                 <li class='nav-item {{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}'>
-                    <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ .URL }}"> {{ .Name }}</a>
+                    <a class="block py-2 px-3 hovertext text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent" href="{{ .URL }}"> {{ .Name }}</a>
                 </li>
                 {{ end }}
-                <li class="darkmode-toggle flex flex-none md:mr-0">
+                <li class="darkmode-toggle flex flex-none md:mr-0 py-2">
                     <label for="darkmode-toggle" class="flex items-center px-3 cursor-pointer rounded-full " title="Switch Mode">
                       <input name="darkmode-toggle" id="darkmode-toggle" type="checkbox" class="sr-only peer" aria-label="Switch Mode">
                       <div class="group flex flex-row gap-1 justify-center h-8 px-1 rounded-full bg-white border-2 dark:border-0 border-gray-200 dark:bg-gray-700 dark:text-white">

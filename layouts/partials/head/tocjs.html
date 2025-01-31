@@ -1,0 +1,31 @@
+<script>
+    function scrollToToc() {
+            const toc = document.getElementById('TocHead');
+            if (toc) {
+                toc.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+    // show or hide dyn
+    window.addEventListener('scroll', () => {
+            const backToTocButton = document.getElementById('back-to-toc');
+            if (window.scrollY > 1024*2) {
+                backToTocButton.classList.remove('hidden');
+            } else {
+                backToTocButton.classList.add('hidden');
+            }
+        });
+  
+    console.log("Adding selector in toc")
+    document.querySelectorAll('#TableOfContents a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); // prevent default jumping
+                const targetId = this.getAttribute('href'); // get id
+                const targetElement = document.querySelector(targetId); 
+                // console.log("get",targetElement)
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' }); // scroll it!
+                }
+            });
+        });
+</script>

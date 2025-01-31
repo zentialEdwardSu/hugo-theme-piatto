@@ -11,6 +11,8 @@
   {{- end }}
 {{- end }} -->
 <script src="/js/main.js"></script>
+<script src="/js/fastsearch.js"></script>
+<script src="/js/fuse.min.js"></script><!-- download and copy over fuse.min.js file from fusejs.io -->
 <script>
   console.log("Script from js.html");
 
@@ -26,36 +28,5 @@
       document.documentElement.classList.remove('dark')
       themeToggle.checked = false
       console.log("Apply light")
-  }
-
-  function scrollToToc() {
-            const toc = document.getElementById('TocHead');
-            if (toc) {
-                toc.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-  // show or hide dyn
-  window.addEventListener('scroll', () => {
-            const backToTocButton = document.getElementById('back-to-toc');
-            if (window.scrollY > 1024*2) {
-                backToTocButton.classList.remove('hidden');
-            } else {
-                backToTocButton.classList.add('hidden');
-            }
-        });
-  
-  console.log("Adding selector")
-  document.querySelectorAll('#TableOfContents a').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault(); // prevent default jumping
-                const targetId = this.getAttribute('href'); // get id
-                const targetElement = document.querySelector(targetId); 
-                console.log("get",targetElement)
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' }); // scroll it!
-                }
-            });
-        });
-  
+  }  
 </script>

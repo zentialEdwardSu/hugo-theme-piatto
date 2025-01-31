@@ -11,6 +11,9 @@ copyright = "EdwardSu ©"
   initials = "Ed"
   footercd = true
   showReadingTime=true
+  search = true # if show search bar
+  recentPosts = true # if show recent posts
+  recentPostsCount = 4
 
   [[params.social]]
     name = "Twitter"
@@ -21,6 +24,11 @@ copyright = "EdwardSu ©"
     name = "Github"
     link = "#"
     icon = "ti ti-brand-github"
+  
+  [[params.social]]
+    name = "Gitlab"
+    link = "#"
+    icon = "ti ti-brand-gitlab"
 
   [[params.social]]
     name = "Mail" 
@@ -45,6 +53,9 @@ copyright = "EdwardSu ©"
     name = "Me"
     url = "/me/"
     weight = 3
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
 
 # syntax highlight settings
 [markup]

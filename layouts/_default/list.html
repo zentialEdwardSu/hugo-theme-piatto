@@ -16,8 +16,8 @@
     {{ end }}
     <div class="group hover:bg-slate-200 dark:hover:bg-slate-700 py-4 rounded-lg">
       <a href="{{.Permalink}}" class="">
-        <li class="mx-0 sm:mx-4">
-          <h3 class="text-2xl text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200">{{ .Title | .RenderString }}</h3>
+        <li class="mx-4">
+          <h3 class="text-2xl font-semibold text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-300">{{ .Title | .RenderString }}</h3>
           <div class="my-2 text-lg font-medium text-slate-300 dark:text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-300">
           
             {{ with .Description }}

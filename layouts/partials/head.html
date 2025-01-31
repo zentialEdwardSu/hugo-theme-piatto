@@ -1,9 +1,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
+<!-- Simple SEO -->
+<meta name="description" content="{{ .Description }}">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description }}">
+<meta property="og:image" content="{{ .Params.image | absURL }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta name="description" content="{{ .Description | default (.Summary | truncate 160) }}">
+<!-- end -->
 <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}" />
 
+<!-- googlesans -->
+{{ $fonts := resources.Get "css/fonts.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $fonts.Permalink }}" integrity="{{ $fonts.Data.Integrity }}">
+
 <!-- Theme CSS (/static/css/*.css) -->
-<link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />
+{{ with resources.Get "css/main.css" | postCSS | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}">
+{{ end }}
+<!-- <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />` -->
 <link rel="stylesheet" href="{{ "css/custom.css" | relURL }}" />
 
 <!-- load tabler icons -->

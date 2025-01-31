@@ -4,6 +4,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Google Sans', 'sans-serif'], // set Google Sans
+      },
       minHeight:{
         'frame': '768px'
       },

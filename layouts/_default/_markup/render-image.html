@@ -1,0 +1,10 @@
+{{ $img := .Page.Resources.Get .Destination }}
+{{ if $img }}
+  {{ $webp := $img.Resize "800x webp" }}
+  <picture>
+    <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+    <img src="{{ $img.RelPermalink }}" alt="{{ .Text }}" class="w-full object-cover">
+  </picture>
+{{ else }}
+  <img id="not-found" src="{{ .Destination}}" alt="{{ .Text }}" class="w-full object-cover">
+{{ end }}

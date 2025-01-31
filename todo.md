@@ -1,7 +1,15 @@
 # todo
 
-- [ ] add meta for SEO
+- [X] add meta for SEO
 - [X] hint support shortcode
-- [ ] h with anchor TOC
+- [X] h with anchor TOC
 - [X] cover support
 - [ ] typst support
+- [X] add search
+- [ ] rss support
+- [X] pic -> webp
+# v1 prepare
+- [ ] archtypes (our cli if necessary)
+- [ ] docs as example
+
+- [ ] do some style cleaning
