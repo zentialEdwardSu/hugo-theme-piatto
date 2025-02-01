@@ -41,10 +41,10 @@
         {{ if .Params.cover }}
           {{ $cover := .Resources.Get .Params.cover }}
           {{ if $cover }}
-              {{ $resized := $cover.Resize "600x400" }}
+              {{ $resized := $cover.Fit "600x400 webp" }}
               <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="w-full h-48 object-cover" />
           {{ else }}
-              <p>Cover image not found: {{ .Params.cover }}</p>
+              <p>Page Cover image not found: {{ $cover }}</p>
           {{ end }}
         {{ end }}
       
