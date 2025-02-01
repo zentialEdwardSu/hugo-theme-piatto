@@ -4,7 +4,6 @@ title = 'Piattos example site '
 theme = "hugo-theme-piatto"
 copyright = "EdwardSu ©"
 
-
 [params]
   name = "EdwardSu"
   description = "Loafer and bug producer."

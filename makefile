@@ -26,7 +26,7 @@ clean:
 
 vercel:
 	echo "build ${SITE_URL} with theme $(basename "${PWD}")";
-	hugo -s exampleSite --gc -b ${SITE_URL} --themesDir=../.. -t $(basename "${PWD}") --minify --ignoreCache --logLevel debug --forceSyncStatic --cleanDestinationDir
+	hugo -s exampleSite --gc -b ${SITE_URL} --themesDir=../.. -t $(basename "${PWD}") --minify --ignoreCache --logLevel info --forceSyncStatic --cleanDestinationDir
 	echo "moving build dir to wrokroot"
 	mv ./exampleSite/public ./
 	echo "done"
