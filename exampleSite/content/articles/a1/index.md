@@ -8,6 +8,7 @@ description: "Example of markdown syntax you can use to edit your content"
 categories : [
     "syntax",
 ]
+last_edit: 2022-02-01 15:24
 ---
 
 This is just an intro paragraph to show how the initial letter of each article or post will look.
