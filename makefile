@@ -1,4 +1,7 @@
-.PHONY: tailwind,hugo,clean,vercel,font
+.PHONY: tailwind,hugo,clean,vercel,font,tailwind
+
+tailwind:
+	npx tailwindcss -i assets/css/main.css -o assets/css/style.css
 
 tailwind-dev:
 	npx tailwindcss -i assets/css/main.css -o assets/css/style.css --watch

@@ -14,11 +14,10 @@
 {{ $fonts := resources.Get "css/fonts.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $fonts.Permalink }}" integrity="{{ $fonts.Data.Integrity }}">
 
-<!-- Theme CSS (/static/css/*.css) -->
-{{ with resources.Get "css/main.css" | postCSS | minify | fingerprint }}
+<!-- Compile separately -->
+{{ with resources.Get "css/style.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}">
 {{ end }}
-<!-- <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />` -->
 <link rel="stylesheet" href="{{ "css/custom.css" | relURL }}" />
 
 <!-- load tabler icons -->
