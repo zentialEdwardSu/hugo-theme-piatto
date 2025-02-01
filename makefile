@@ -26,8 +26,8 @@ clean:
 
 vercel:
 	pwd
-	echo "build ${SITE_URL} with theme hugo-theme-piatto";
-	hugo -s exampleSite --gc -b ${SITE_URL} --themesDir=../.. -t "hugo-theme-piatto" --minify --ignoreCache --logLevel info
+	echo "build ${SITE_URL} with theme $(basename "${PWD}")";
+	hugo -s exampleSite --gc -b ${SITE_URL} --themesDir=../.. -t $(basename "${PWD}") --minify --ignoreCache --logLevel info
 	echo "moving build dir to wrokroot"
 	mv ./exampleSite/public ./
 	echo "done"
