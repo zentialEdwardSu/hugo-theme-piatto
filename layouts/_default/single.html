@@ -9,8 +9,16 @@
   </div>
   <div class="flex flex-col gap-y-3 sm:p-6 mt-6 sm:mx-2 mx-0">
     {{ if .Params.cover}}
-    <div class="mx-auto">
-      <img src="{{.Params.cover}}"/>
+    <div class=" w-full">
+    {{ if .Params.KeepOrigin}}
+      <img src="{{.Params.cover}}" class="mx-auto rounded-lg"/>
+    {{else}}
+      {{ $cover := .Resources.Get .Params.cover }}
+      {{ if $cover }}
+      {{ $resized := $cover.Fit "1240x1240 webp" }}
+      <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="mx-auto rounded-lg" />
+      {{ end }}
+      {{end}}
     </div>
     {{ end }}
     <h1 class="text-4xl font-semibold text-slate-800 dark:text-slate-100">
@@ -23,12 +31,29 @@
     </h2>
     {{ end }}
 
-    <div class="py-2">
-      {{ partial "time.html" . }}
+    {{ partial "time.html" . }}
+    {{ partial "taxonomies.html" .}}
+
+    {{if .GitInfo }}
+    {{$outOfDateMonths := .Site.Params.outOfDate }}
+    {{$currentTime := now }}
+    {{$lastEdit := .GitInfo.AuthorDate}}
+    {{ $unixres := sub $currentTime.Unix $lastEdit.Unix}}
+    <!-- for test we use minutes -->
+    {{ $monthres := 0 }}
+    {{ if hugo.IsProduction }}
+      {{ $monthres = div $unixres 2592000}}
+    {{ else }}
+      {{ $monthres = div $unixres 60}}
+    {{ end }}
+    {{$monthSinceLastEdit := math.Round $monthres}}
+    {{ if gt $monthSinceLastEdit $outOfDateMonths}}
+    <div class="rounded-lg px-2 py-2 bg-blue-200 mx-auto">
+      <i class="ti ti-info-circle text-2xl align-middle"></i>
+      <span class="text-md align-middle">It has been more than <b>{{$monthSinceLastEdit}}</b> month(s) since the last edit, so the content of the article may be outdated.</span>
     </div>
-    <div class="py-2">
-      {{ partial "taxonomies.html" .}}
-    </div>
+    {{ end }}
+    {{ end }}
 
     {{ if default false (default .Site.Params.WithToc .Params.WithToc) }}
       <section class="prose prose-slate dark:prose-invert w-full max-w-4xl lg:max-w-5xl mt-6">

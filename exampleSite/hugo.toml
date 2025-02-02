@@ -1,19 +1,22 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://example.org/' # will usually be overwrote during build time
 languageCode = 'en-us'
-title = 'Piattos example site '
+title = 'Piattos Example Site '
 theme = "hugo-theme-piatto"
 copyright = "EdwardSu ©"
+enableGitInfo = true
 
 [params]
-  name = "EdwardSu"
-  description = "Loafer and bug producer."
-  initials = "Ed"
-  footercd = true
-  showReadingTime=true
-  search = true # if show search bar
-  recentPosts = true # if show recent posts
-  recentPostsCount = 4
+  name = "Hugo Theme Piatto"
+  description = "Try to be Simple but useful."
+  initials = "HP" # up-left icon
+  footercd = true # cd ../ at bottom
+  showReadingTime=true # reading time
+  search = true # if show search bar at main
+  recentPosts = true # if show recent posts at main
+  recentPostsCount = 4 # how much recent posts will be showed
+  outOfDate = 2 # (years) 
 
+  # social media params
   [[params.social]]
     name = "Twitter"
     link = "#"
