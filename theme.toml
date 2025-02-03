@@ -1,7 +1,7 @@
 # theme.toml template for a Hugo theme
 # See https://github.com/gohugoio/hugoThemes#themetoml for an example
 
-name = 'hugo-theme-piatto'
+name = 'Piatto'
 license = 'MIT'
 licenselink = 'https://github.com/zentialEdwardSu/hugo-theme-piatto/LICENSE'
 description = 'Theme description'
@@ -10,19 +10,13 @@ description = 'Theme description'
 homepage = 'https://github.com/zentialEdwardSu/hugo-theme-piatto'
 
 # If you have a running demo of the theme
-demosite = 'https://owner.github.io/repo'
+demosite = 'https://hugo-theme-piatto.edwardsu.me/'
 
 # Taxonomy terms
-tags = ['blog', 'company']
+tags = ['blog']
 features = ['some', 'awesome', 'features']
 
 # If the theme has a single author
 [author]
   name = 'EdwardSu'
   homepage = 'https://github.com/zentialEdwardSu'
-
-# If porting an existing theme
-[original]
-  author = 'Name of original author'
-  homepage = 'Website of original author'
-  repo = 'https://github.com/owner/repo'

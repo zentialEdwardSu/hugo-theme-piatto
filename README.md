@@ -2,12 +2,54 @@
 
 ## Features
 
+- Search
+- Typst as blog src
+
 ## Installation
+
+To use the theme, you should add it as a sub-module
+
+```bash
+git submodule addhttps://github.com/zentialEdwardSu/hugo-theme-piatto.git themes/piatto
+# Or to update to the latest version
+git submodule update --remote
+# theme init(Sync dir srtuct and do some setup)
+python themes/piatto/scripts/hpcli.py init
+```
+
+## New Posts
+
+To create a new post, just run
+
+```bash
+python scripts/hpcli.py new
+```
+
+or just create the floder and index.md yourself. Just remember `main.typ` should always be the entry of your typst documents. 
+
+## Typst guidence
+
+When using typst, you need to pay attention to the top, bottom, left and right margins.
 
 ## Configuration
 
+read the comments in `hugo.toml` in the root dir of your site
 
 ## Customization
+
+> **Note**:
+> All scripts below should be run from the root directory of your theme.
+
+### styles
+
+run
+
+```bash
+ make tailwind-dev  
+```
+
+and just edit the class name of the html elements
+
 
 ### fonts
 
@@ -42,3 +84,13 @@ make icons
 This will automatically detect the change and processing subsetting.
 
 You should only run the script while releasing the site.Because this will replace the font at static.
+
+
+## Citations
+
+Without the reference and help of these websites, piatto would not be complete.
+
+- The idea of ​​writing piatto came from this theme: https://github.com/paulmartins/hugo-digital-garden-theme.git
+- bilibili shortcodes and style of light/dark switch comes from: https://github.com/tomowang/hugo-theme-tailwind.git
+- hint shorcode comes from: https://github.com/alex-shpak/hugo-book.git
+- searching relies on the guidance of this blog to achieve: https://gist.github.com/cmod/5410eae147e4318164258742dd053993

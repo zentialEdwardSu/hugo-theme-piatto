@@ -1,15 +1,16 @@
 # todo
-
 - [X] add meta for SEO
 - [X] hint support shortcode
 - [X] h with anchor TOC
 - [X] cover support
-- [ ] typst support
+- [X] typst support
 - [X] add search
 - [ ] rss support
 - [X] pic -> webp
-# v1 prepare
-- [ ] archtypes (our cli if necessary)
+- [X] lastedited params
+## v1 prepare
+- [X] archtypes (our cli if necessary)
 - [ ] docs as example
-
+- [ ] md code blocks scroll instead of linebreak
+- [ ] progress bar reading hint
 - [ ] do some style cleaning

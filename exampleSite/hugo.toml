@@ -2,7 +2,7 @@ baseURL = 'https://example.org/' # will usually be overwrote during build time
 languageCode = 'en-us'
 title = 'Piattos Example Site '
 theme = "hugo-theme-piatto"
-copyright = "EdwardSu ©"
+copyright = "MIT"
 enableGitInfo = true
 
 [params]
