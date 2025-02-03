@@ -35,12 +35,6 @@
               {{ $dateHuman := .Date.Format ($.Site.Params.DateFormatList | default "Jan 01") }}
               <div class="flex flex-row text-base gap-x-1">
                 <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
-                {{ if .GitInfo }}
-                {{$editHuman :=  .GitInfo.AuthorDate.Format "Jan 01" }}
-                  {{ if ne $dateHuman $editHuman}}
-                  <time datetime="{{ $editHuman}}">[E: {{ $editHuman }}]</time>
-                  {{end}}
-                {{ end }}
                 {{- if $.Site.Params.showReadingTime }}
                   <div class="text-base gap-x-1">
                     <span> · {{ .ReadingTime }}min</span>
