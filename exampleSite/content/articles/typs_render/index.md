@@ -1,10 +1,10 @@
 ---
-title: "Typst Showcase"
-date: 2025-08-01
-draft: false
-project_tags: ["typst"]
-weight: 2
-description: "Just for demostrate how typst is generate"
-cover: "test_cover.jpg"
+title: Typst Showcase
+date: 2024-08-01
+project_tags:
+- typst
+description: Just for demostrate how typst is generate
 typst: true
+noWordTime: true
+build_time: '2025-02-03'
 ---
