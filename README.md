@@ -5,6 +5,14 @@
 - Search
 - Typst as blog src
 
+## Scripts
+
+Due to the following considerations:
+1. The processing of fonts and typst source files in the theme is difficult to integrate using the hugo asset pipeline;
+2. To simplify some operations;
+3. Considering the cross-platform issues of binary applications;
+We have introduced some scripts in the theme, including shell and python scripts, which may have some impact on the directory. **So before running any script, you should read the script code to know its possible impact.**
+
 ## Installation
 
 To use the theme, you should add it as a sub-module
@@ -13,9 +21,14 @@ To use the theme, you should add it as a sub-module
 git submodule addhttps://github.com/zentialEdwardSu/hugo-theme-piatto.git themes/piatto
 # Or to update to the latest version
 git submodule update --remote
+```
+For out-of-box experience, you can run the script below:
+
+```bash
 # theme init(Sync dir srtuct and do some setup)
 python themes/piatto/scripts/hpcli.py init
 ```
+Or manually copy and create files according to the directory structure in exampleSite
 
 ## New Posts
 
