@@ -74,12 +74,21 @@
       {{partial "head/tocjs.html"}}
     {{ end }}
 
+
+    {{ if .Params.typst }}
+    {{ $svgs := .Resources.Match "images/*.svg" }}
+      <div class="mx-auto">
+      {{ range $svgs }}
+          {{ .Content | safeHTML }}
+      {{end}}
+      </div>
+    {{ else }}
     <article class="mt-6 w-full max-w-4xl lg:max-w-5xl prose prose-slate dark:prose-invert prose-quoteless post-content">
       {{ .Content | safeHTML }}
     </article>
+  {{ end }}
 
   </div>
-
 <div class="h-20"></div>
 </div>
 {{ end }}

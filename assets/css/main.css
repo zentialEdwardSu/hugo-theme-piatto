@@ -72,3 +72,11 @@ body {
 .hovertext {
   @apply hover:text-blue-600 dark:hover:text-blue-300
 }
+
+.typst-doc {
+  @apply fill-none h-auto w-full
+}
+
+.typst-text {
+  @apply  dark:fill-white fill-slate-800
+}
