@@ -1,7 +1,7 @@
 ---
 title: Typst Showcase
 date: 2024-08-01
-project_tags:
+tags:
 - typst
 description: Just for demostrate how typst is generate
 typst: true

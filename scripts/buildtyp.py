@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import List
 import yaml
-import toml
+# import toml
 import re
 import subprocess
 import datetime
@@ -12,11 +12,11 @@ def save_front_matter(file_path: Path, data: dict, format: str = 'yaml',v=False)
     if format == 'yaml':
         front_matter = yaml.dump(data, sort_keys=False, allow_unicode=True)
         front_matter = f"---\n{front_matter}---\n"
-    elif format == 'toml':
-        front_matter = toml.dumps(data)
-        front_matter = f"+++\n{front_matter}+++\n"
+    # elif format == 'toml':
+    #     front_matter = toml.dumps(data)
+    #     front_matter = f"+++\n{front_matter}+++\n"
     else:
-        raise ValueError("Unsupported format. Use 'yaml' or 'toml'.")
+        raise ValueError("Unsupported format. Use 'yaml'.")
     if v: print(f"[Front Matter] Writting to {file_path} ")
     with file_path.open('w', encoding='utf-8') as file:
         file.write(front_matter)

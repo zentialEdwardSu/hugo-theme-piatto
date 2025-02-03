@@ -2,7 +2,7 @@
 title: "Feature Showcase"
 date: 2024-08-01
 draft: false
-project_tags: ["markdown"]
+tags: ["markdown"]
 weight: 2
 description: "Just for demostrate content"
 categories : [
