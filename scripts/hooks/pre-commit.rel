@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "Running pre-commit hooks"
+
+TARGET_DIR="content/articles"
+
+CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+SHOULD_ABORT=0
+
+for FILE in $CHANGED_FILES; do
+  if [[ $FILE == "$TARGET_DIR"*/main.typ ]]; then
+    echo "$FILE" Changed
+    FOLDER_PATH=$(dirname "$FILE")
+
+    OUTPUT=$(python scripts/buildtyp.py -v -i "$FOLDER_PATH")
+    
+    if [ $? -eq 0 ]; then
+      git add "$FOLDER_PATH"
+    else
+      echo "Error: Python script failed for folder $FOLDER_PATH. Aborting commit."
+      SHOULD_ABORT=1
+      break
+    fi
+  fi
+done
+
+if [ $SHOULD_ABORT -eq 1 ]; then
+  exit 1
+fi
+
+exit 0
