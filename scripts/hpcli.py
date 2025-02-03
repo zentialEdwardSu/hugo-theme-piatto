@@ -31,6 +31,16 @@ APPEND_DATA = {
 
 }
 
+def copy_folder(src: Path, dst: Path):
+
+    dst.mkdir(parents=True, exist_ok=True)
+
+    for item in src.iterdir():
+        if item.is_dir():
+            copy_folder(item, dst / item.name)
+        else:
+            shutil.copy2(item, dst / item.name)
+
 def save_front_matter(file_path: Path, data: dict, format: str = 'yaml',v=False) -> None:
     try:
         import yaml
@@ -63,7 +73,7 @@ def get_python():
         "python_version": sys.version.split()[0],
     }
 
-def init():
+def init(args):
     """
     init subcommand function
     """
@@ -77,7 +87,7 @@ def init():
     print("Basic setup")
     
     print("Coping hugo.toml")
-    shutil.copy("theme/piatto/exampleSite/hugo.toml","./hugo.toml")
+    shutil.copy("themes/piatto/exampleSite/hugo.toml","./hugo.toml")
 
     print("Setting up contents")
     content_dir = Path("content")
@@ -87,15 +97,16 @@ def init():
         "description": "Some personal information",
         "date": datetime.now().strftime("%Y-%m-%d")
     }
-    save_front_matter(content_dir / "me" / "index.md",me_data)
+    save_front_matter(content_dir / "me" / "index.md",me_data,v=True)
     os.mkdir(content_dir / "articles")
     os.mkdir(content_dir / "projects")
     project_info = {
         "title": "Projects",
         "description": "Some Projects."
     }
-    save_front_matter(content_dir / "projects" / "_index.md", project_info, v=bool)
-    os.mkdir("data")
+    save_front_matter(content_dir / "projects" / "_index.md", project_info, v=True)
+    data_path = Path("data")
+    if not data_path.exists(): os.mkdir(data_path)
     template_data = [{
       "name": "Bear Notes",
       "description": "Quick note taking application on Mac for writing down instant thoughts, application on Mac for writing down instant thoughts",
@@ -104,13 +115,12 @@ def init():
       "tag": ["Productivity"],
       "status": "Working"
     }]
-    with open("data/projects.json",encoding="utf-8") as f:
+    with open("data/projects.json","w",encoding="utf-8") as f:
         json.dump(template_data, f)
 
     print("Doing script setup")
     os.mkdir(Path("scripts"))
-    for file in Path("theme/piatto/scripts").glob('*'):
-        shutil.copy(file, Path("scripts"))
+    copy_folder(Path("themes/piatto/scripts"),Path("scripts"))
 
     print("Setting hook for typst to compile")
     subprocess.check_call(["python","scripts/mh.py","set","-d","scripts/hooks","-a"])

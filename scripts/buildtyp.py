@@ -44,8 +44,6 @@ def parse_front_matter(content):
     
     if match.group(0).startswith('---'):
         return yaml.safe_load(front_matter)
-    else:
-        return toml.loads(front_matter)
 
 def read_markdown_file(file_path:Path):
     content = file_path.read_text(encoding='utf-8')
