@@ -42,7 +42,7 @@ def main():
     parser_set = subparsers.add_parser("set", help="Set a custom Git hooks directory")
     parser_set.add_argument("-d","--hooks_dir", type=str, help="Path to the custom hooks directory")
     parser_set.add_argument("-c","--create",type=bool, help="create one if not exists",default=False)
-    parser_set.add_argument("-a","--add_hook",action="store_true",default=False,help="copy the hooks for typst to ")
+    # parser_set.add_argument("-a","--add_hook",action="store_true",default=False,help="copy the hooks for typst to ")
 
     parser_reset = subparsers.add_parser("reset", help="Reset Git hooks directory to default")
     script_dir = os.path.dirname(__file__)
@@ -52,8 +52,8 @@ def main():
     if args.command == "set":
         set_hooks_path(args.hooks_dir,args.create)
 
-        if args.add_hook:
-            shutil.copy(f"{script_dir}/hooks/pre-commit.rel",f"{args.hooks_dir}/pre-commit")
+        # if args.add_hook:
+        #     shutil.copy(f"{script_dir}/hooks/pre-commit.rel",f"{args.hooks_dir}/pre-commit")
     elif args.command == "reset":
         reset_hooks_path()
     else:

@@ -122,8 +122,8 @@ def init(args):
     os.mkdir(Path("scripts"))
     copy_folder(Path("themes/piatto/scripts"),Path("scripts"))
 
-    print("Setting hook for typst to compile")
-    subprocess.check_call(["python","scripts/mh.py","set","-d","scripts/hooks","-a"])
+    print("Setting hook for typst to compile automatically.")
+    subprocess.check_call(["python","scripts/mh.py","set","-d","themes/piatto/scripts/hooks"])
 
     print("Done")
     

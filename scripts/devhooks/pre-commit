@@ -2,7 +2,7 @@
 
 echo "Running pre-commit hooks"
 
-TARGET_DIR="content/articles"
+TARGET_DIR="exampleSite/content/articles"
 
 CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
 SHOULD_ABORT=0
