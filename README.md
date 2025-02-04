@@ -63,6 +63,10 @@ run
 
 and just edit the class name of the html elements
 
+### Favicon
+
+Create the `static` floder in th root of your site, copy your icon to it and name the icon `favicon.ico`
+
 
 ### fonts
 
@@ -106,4 +110,6 @@ Without the reference and help of these websites, piatto would not be complete.
 - The idea of ​​writing piatto came from this theme: https://github.com/paulmartins/hugo-digital-garden-theme.git
 - bilibili shortcodes and style of light/dark switch comes from: https://github.com/tomowang/hugo-theme-tailwind.git
 - hint shorcode comes from: https://github.com/alex-shpak/hugo-book.git
-- searching relies on the guidance of this blog to achieve: https://gist.github.com/cmod/5410eae147e4318164258742dd053993
+- The rendering method of Projects data is obtained from: (Another hugo theme, sorry I forgot it's name)
+- searching relies on the guidance of this blog to achieve(using fuse.js): https://gist.github.com/cmod/5410eae147e4318164258742dd053993
+- Icons comes from tabler-icons: https://github.com/tabler/tabler-icons

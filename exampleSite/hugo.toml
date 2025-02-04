@@ -14,7 +14,7 @@ enableGitInfo = true
   search = true # if show search bar at main
   recentPosts = true # if show recent posts at main
   recentPostsCount = 4 # how much recent posts will be showed
-  outOfDate = 2 # (years) 
+  outOfDate = 2 # (months) 
 
   # social media params
   [[params.social]]
