@@ -12,7 +12,7 @@
 
 <!-- googlesans -->
 {{ $fonts := resources.Get "css/fonts.css" | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $fonts.Permalink }}" integrity="{{ $fonts.Data.Integrity }}">
+<link rel="stylesheet" href="{{ $fonts.RelPermalink }}" integrity="{{ $fonts.Data.Integrity }}">
 
 <!-- Compile separately -->
 {{ with resources.Get "css/style.css" | minify | fingerprint }}
