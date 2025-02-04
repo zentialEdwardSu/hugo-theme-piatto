@@ -6,5 +6,5 @@ tags:
 description: Just for demostrate how typst is generate
 typst: true
 noWordTime: true
-build_time: '2025-02-03'
+build_time: '2025-02-04'
 ---

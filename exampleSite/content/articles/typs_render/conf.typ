@@ -4,6 +4,7 @@
   abstract: [],
   doc,
 ) = {
+  set page(margin: 0pt)
   set align(center)
   text(17pt, title)
 

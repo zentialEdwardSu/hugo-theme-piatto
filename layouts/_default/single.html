@@ -77,7 +77,7 @@
 
     {{ if .Params.typst }}
     {{ $svgs := .Resources.Match "images/*.svg" }}
-      <div class="mx-auto">
+      <div class="mx-auto mt-6">
       {{ range $svgs }}
           {{ .Content | safeHTML }}
       {{end}}
