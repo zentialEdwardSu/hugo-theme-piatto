@@ -5,7 +5,7 @@
 - [X] cover support
 - [X] typst support
 - [X] add search
-- [ ] rss support
+- [X] rss support
 - [X] pic -> webp
 - [X] lastedited params
 ## v1 prepare
@@ -14,3 +14,4 @@
 - [ ] md code blocks scroll instead of linebreak
 - [ ] progress bar reading hint
 - [ ] do some style cleaning
+- [ ] google analytics
