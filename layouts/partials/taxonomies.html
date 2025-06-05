@@ -15,7 +15,7 @@
       {{ range .Params.tags }}
       <li>
         <a href="{{ (urlize (printf "tags/%s" . )) | relLangURL }}/"
-          class="flex-row  mr-2 py-1 text-slate-500 text-xs mt-1 px-1.5 rounded-full border border-slate-300 dark:border-slate-600 inline-block">
+          class="flex-row  mr-2 py-1 text-slate-500 text-xs px-1.5 rounded-full border border-slate-300 dark:border-slate-600 inline-block">
           <span class="ml-0"># {{ . }}</span>
         </a>
       </li>

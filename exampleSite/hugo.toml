@@ -4,6 +4,7 @@ title = 'Piattos Example Site '
 theme = "hugo-theme-piatto"
 copyright = "MIT"
 enableGitInfo = true
+googleAnalytics = "The-G-MEASUREMENT_ID" # replace with your Google Analytics ID
 
 [params]
   name = "Hugo Theme Piatto"

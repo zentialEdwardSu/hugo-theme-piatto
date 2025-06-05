@@ -24,6 +24,10 @@
 <link rel="stylesheet" href="{{ "css/tabler-icons.min.css" | relURL }}" >
 
 {{ if .Params.katex}}{{ partial "katex.html" . }}{{ end }}
+
+<!-- {{- if hugo.IsProduction | or (eq site.Params.env "production") }} -->
+
+<!-- {{- end -}} -->
 <!-- Site Title -->
 {{ $title := print .Site.Title " | " .Title }}
 {{ if .IsHome }}{{ $title = .Site.Title }}{{ end }}
