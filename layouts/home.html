@@ -14,10 +14,10 @@
 {{ if $.Site.Params.Search }}
 <div class="container mx-auto">
   <h2 class="text-2xl font-bold pt-8 sm:pt-14">Search Posts</h2>
-  <span class="text-slate-600 dark:text-gray-50 text-md mb-8">Start by searching for topics you're interested in :)</span>
+  <span class="text-slate-700 dark:text-gray-50 text-md mb-8">Start by searching for topics you're interested in :)</span>
   
   <div id="fastSearch" class="pt-1 sm:pt-3 container mx-auto">
-      <input id="searchInput" placeholder="Type Something..." class= "text-lg border-2 dark:border-0 w-full px-4 py-2 rounded-3xl focus:outline-none focus:ring-2 focus:ring-slate-800 dark:ring-0 focus:border-transparent dark:bg-slate-600" tabindex="0">
+      <input id="searchInput" placeholder="Type Something..." class= "text-lg border-2 w-full px-4 py-2 rounded-3xl focus:outline-none focus:ring-2 focus:ring-slate-800 dark:border-slate-700 focus:border-transparent dark:bg-slate-700" tabindex="0">
       <div id="hidegroup"class="hidden">
           <div class="mt-2 text-md">
               <span id="resultCount" class="font-semibold">0</span> Pages Found...
@@ -37,29 +37,29 @@
   {{ $recentPosts := first $recentPostsCount (where .Site.RegularPages "Type" "articles") }}
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {{ range $recentPosts }}
-      <div class="bg-white dark:bg-slate-600 rounded-lg shadow-md overflow-hidden">
+      <a href="{{ .RelPermalink }}" class="bg-white dark:bg-slate-600 rounded-lg shadow-md overflow-hidden flex flex-col group">
         {{ if .Params.cover }}
           {{ $cover := .Resources.Get .Params.cover }}
           {{ if $cover }}
               {{ $resized := $cover.Fit "600x400 webp" }}
-              <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="w-full h-48 object-cover" />
+              <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="w-full h-48 object-cover group-hover:brightness-110 transition-all duration-200" />
           {{ else }}
               <p>Page Cover image not found: {{ $cover }}</p>
           {{ end }}
         {{ end }}
       
-        <div class="p-6">
-          <h2 class="text-xl font-bold mb-2">
-            <a href="{{ .RelPermalink }}" class="hovertext">{{ .Title }}</a>
+        <div class="p-6 flex flex-col flex-grow">
+          <h2 class="text-xl font-bold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+            {{ .Title }}
           </h2>
-          <p class="text-gray-600  dark:text-gray-100 mb-4">{{ .Description | truncate 100 }}</p>
-          <div class="flex items-center text-sm text-gray-500 dark:text-gray-200">
+          <p class="text-gray-600 dark:text-gray-100 mb-4 flex-grow">{{ .Description | truncate 100 }}</p>
+          <div class="flex items-center text-sm text-gray-500 dark:text-gray-200 mt-auto">
             <span>{{ .Date.Format "2006-01-02" }}</span>
             <span class="mx-2">•</span>
             <span>{{ .ReadingTime }} min read</span>
           </div>
         </div>
-      </div>
+      </a>
     {{ end }}
   </div>
 </div>

@@ -17,14 +17,15 @@
             <ul class="font-medium flex flex-col items-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 {{- $currentPage := . -}}
                 {{ range .Site.Menus.main -}}
-                <li class='nav-item {{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}'>
-                    <a class="block py-2 px-3 hovertext text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent" href="{{ .URL }}"> {{ .Name }}</a>
+                {{ $isActive := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.RelPermalink .URL) }}
+                <li class='nav-item {{ if $isActive }}active{{ end }}'>
+                    <a class="block py-2 px-3 rounded md:border-0 md:p-0 {{ if $isActive }}font-bold text-blue-600 dark:text-blue-400 underline decoration-blue-600 dark:decoration-blue-400 decoration-2{{ else }}text-gray-900 dark:text-white hover:bg-gray-100 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent hovertext{{ end }}" href="{{ .URL }}"> {{ .Name }}</a>
                 </li>
                 {{ end }}
                 <li class="darkmode-toggle flex flex-none md:mr-0 py-2">
                     <label for="darkmode-toggle" class="flex items-center px-3 cursor-pointer rounded-full " title="Switch Mode">
                       <input name="darkmode-toggle" id="darkmode-toggle" type="checkbox" class="sr-only peer" aria-label="Switch Mode">
-                      <div class="group flex flex-row gap-1 justify-center h-8 px-1 rounded-full bg-white border-2 dark:border-0 border-gray-200 dark:bg-gray-700 dark:text-white">
+                      <div class="group flex flex-row gap-1 justify-center h-8 px-1 rounded-full bg-white border-2 dark:border-slate-700 dark:bg-slate-700 dark:text-white">
                         <i class="h-6 w-6 text-2xl ti ti-brightness-down flex-none rounded-full bg-yellow-400 place-self-center peer-checked:group-[]:invisible"></i>
                         <i class="h-6 w-6 text-2xl ti ti-moon-stars flex-none rounded-full place-self-center invisible peer-checked:group-[]:visible"></i>
                       </div>
