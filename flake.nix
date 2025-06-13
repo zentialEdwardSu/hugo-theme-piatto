@@ -19,6 +19,7 @@
             buildInputs = [ 
               hugo
               nodejs_24
+              typst
             ];
           };
         }
