@@ -98,5 +98,7 @@ Typst supports IEEE-style references. Here are some examples:
 - Artificial intelligence is transforming modern society @li2021ai.
 - Blockchain technology is being used to secure IoT networks @chen2023blockchain.
 
+#lorem(250)
+
 == Bibliography
 #bibliography("ref.bib")
