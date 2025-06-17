@@ -87,16 +87,19 @@ To add icons you selected to the layouts, just use as the template below
 
 Because we use tabler icons packaged as fonts, the usual font subsetting method does not work on tabler-icons.woff2. Any operation on the icon other than deleting it needs to be compiled from the source code of tabler-icons.
 
-##### 1. Install fontforge
-##### 2. Init and update the submodule, so we have the local tabler-icons source tree
-##### 3. Apply the patch, this make compile options avaliable for tabler-icons
+1. Install fontforge
+2. Init and update the submodule, so we have the local tabler-icons source tree
+3. Apply the patch, this make compile options avaliable for tabler-icons(at root of repo)
 ```shell
-patch -p < patch.diff
+git apply patch.diff
 ```
-##### 4. Run the make script
+4. run npm install under iconfont dir, run the make script(it will watch exampleSite layouts floder by default, use EXTRA_PATHS= to overwrite)
 ```shell
-make icons
+make icons EXTRA_PATHS="some extra paths if you need"
 ```
+
+> if you are using Nix, just use ` nix develop .#font` to enter env for compiling fonts🤓
+
 
 This will automatically detect the change and processing subsetting.
 

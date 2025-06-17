@@ -1,5 +1,7 @@
 .PHONY: tailwind,hugo,clean,vercel,font,tailwind
 
+EXTRA_PATHS ?=
+
 tailwind:
 	npx tailwindcss -i assets/css/main.css -o assets/css/style.css
 
@@ -14,7 +16,7 @@ icons-dev:
 	cp assets/css/tabler-icons.min.css static/css/tabler-icons.min.css
 
 icons:
-	python scripts/tcli.py -v trim exampleSite layouts --co_out_path assets/iconfonts/packages/icons-webfont/compile-options.json
+	python scripts/tcli.py -v trim exampleSite layouts $(EXTRA_PATHS) --co_out_path assets/iconfonts/packages/icons-webfont/compile-options.json
 	echo "building fonts"
 	cd assets/iconfonts/packages/icons-webfont && pwd &&npm run clean && npm run build:prepare && npm run build:outline && npm run build:webfont
 	echo "Copy to static dir"
