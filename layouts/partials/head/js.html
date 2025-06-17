@@ -14,6 +14,8 @@
 <script src="/js/main.js"></script>
 <script src="/js/fastsearch.js"></script>
 <script src="/js/fuse.min.js"></script><!-- download and copy over fuse.min.js file from fusejs.io -->
+{{ $codeScript := resources.Get "js/code-copy.js" | resources.Minify }}
+<script src="{{ $codeScript.RelPermalink }}"></script>
 <script>
   console.log("Script from js.html");
 

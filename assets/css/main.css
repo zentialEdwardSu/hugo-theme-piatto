@@ -85,3 +85,69 @@ body {
 .typst-text {
   @apply  dark:fill-white fill-slate-800
 }
+
+.highlight {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.highlight pre {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #282a36;
+  position: relative;
+  overflow-x: auto;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+.highlight code {
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  color: #f8f8f2;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+  z-index: 10;
+  font-family: sans-serif;
+}
+
+.copy-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.copy-button.copied {
+  background: rgba(40, 167, 69, 0.8);
+  border-color: rgba(40, 167, 69, 1);
+}
+
+.highlight pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.highlight pre::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.highlight pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.highlight pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

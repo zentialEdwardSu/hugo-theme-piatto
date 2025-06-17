@@ -49,7 +49,7 @@
     {{$monthSinceLastEdit := math.Round $monthres}}
     {{ if gt $monthSinceLastEdit $outOfDateMonths}}
     <div class="rounded-lg px-2 py-2 bg-blue-200 mx-auto">
-      <i class="ti ti-info-circle text-2xl align-middle"></i>
+      <i class="ti ti-exclamation-circle text-2xl align-middle"></i>
       <span class="text-md align-middle">It has been more than <b>{{$monthSinceLastEdit}}</b> month(s) since the last edit, so the content of the article may be outdated.</span>
     </div>
     {{ end }}

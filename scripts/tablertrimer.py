@@ -3,6 +3,7 @@ from typing import Tuple,Dict,List
 import os
 import re
 import mimetypes
+from pathlib import Path
 
 @dataclass
 class CSSCompat():
@@ -14,30 +15,66 @@ def is_text_file(file_path):
     mime_type, _ = mimetypes.guess_type(file_path)
     return mime_type and mime_type.startswith('text')
 
-def find_strings_in_files(folder_path:str, pattern:str,name_only=False,verbose=False):
+def find_strings_in_files(path: str, pattern: str, name_only=False, verbose=False):
+
     matches = []
-
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            file_path = os.path.join(root, file)
-
-            if not is_text_file(file_path):
-                continue
+    path_obj = Path(path)
+    
+    if path_obj.is_file():
+        if not is_text_file(str(path_obj)):
             if verbose:
-                print(f"Searching {file_path}")
-
-            with open(file_path, 'r', encoding='utf-8') as f:
+                print(f"Skipping non-text file: {path_obj}")
+            return set()
+            
+        if verbose:
+            print(f"Searching file: {path_obj}")
+            
+        try:
+            with open(path_obj, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
-
+                
                 for line_number, line in enumerate(lines, 1):
                     for match in re.finditer(rf'{pattern}', line):
                         mg = match.group()
                         if verbose and mg:
-                            print(f"In file {file_path} ,{mg} are found")
+                            print(f"In file {path_obj}, {mg} found on line {line_number}")
                         if name_only:
                             matches.append(match.group())
                         else:
-                            matches.append((match.group(), file_path, line_number))
+                            matches.append((match.group(), str(path_obj), line_number))
+        except Exception as e:
+            if verbose:
+                print(f"Error reading file {path_obj}: {e}")
+                
+    elif path_obj.is_dir():
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                file_path = os.path.join(root, file)
+
+                if not is_text_file(file_path):
+                    continue
+                if verbose:
+                    print(f"Searching {file_path}")
+
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        lines = f.readlines()
+
+                        for line_number, line in enumerate(lines, 1):
+                            for match in re.finditer(rf'{pattern}', line):
+                                mg = match.group()
+                                if verbose and mg:
+                                    print(f"In file {file_path}, {mg} found")
+                                if name_only:
+                                    matches.append(match.group())
+                                else:
+                                    matches.append((match.group(), file_path, line_number))
+                except Exception as e:
+                    if verbose:
+                        print(f"Error reading file {file_path}: {e}")
+    else:
+        if verbose:
+            print(f"Path does not exist: {path}")
 
     return set(matches)
 
