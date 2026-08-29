@@ -1,0 +1,73 @@
+{{- $page := .page -}}
+{{- $typstManifest := partial "typst/manifest.html" $page -}}
+{{- $description := $page.Description | default "" -}}
+{{- if not $description -}}
+  {{- if $typstManifest -}}
+    {{- $description = $typstManifest.summary -}}
+  {{- else -}}
+    {{- $description = $page.Summary | plainify -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $cover := false -}}
+{{- with $page.Params.cover -}}
+  {{- with $page.Resources.Get . -}}
+    {{- $cover = . -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $cover -}}
+  {{- $images := $page.Resources.ByType "image" -}}
+  {{- if gt (len $images) 0 -}}
+    {{- $cover = index $images 0 -}}
+  {{- end -}}
+{{- end -}}
+
+<article class="article-index__item">
+  <div class="article-index__link">
+    <div class="article-index__meta">
+      {{ if $page.Date }}
+        {{ $dateMachine := $page.Date | time.Format "2006-01-02T15:04:05-07:00" }}
+        <time datetime="{{ $dateMachine }}">{{ $page.Date.Format "2006 Jan 02" }}</time>
+      {{ end }}
+
+      {{ with ($page.GetTerms "tags") }}
+        <div class="article-index__terms" aria-label="Tags">
+          {{ range . }}<a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>{{ end }}
+        </div>
+      {{ end }}
+
+      <div class="article-index__terms" aria-label="Category">
+        {{ with ($page.GetTerms "categories") }}
+          {{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+        {{ else }}
+          <a href="{{ $page.CurrentSection.RelPermalink }}">{{ $page.CurrentSection.Title }}</a>
+        {{ end }}
+      </div>
+    </div>
+
+    <div class="article-index__detail">
+      {{ with $description }}
+        <p class="article-index__summary">{{ . | plainify }}</p>
+      {{ end }}
+
+      {{ with $cover }}
+        {{ $large := .Fit "1600x1200 webp q86" }}
+        <figure class="article-index__media" aria-hidden="true">
+          <div class="article-index__media-inner">
+            <img src="{{ $large.RelPermalink }}" width="{{ $large.Width }}" height="{{ $large.Height }}" alt="" loading="lazy" decoding="async" />
+          </div>
+        </figure>
+      {{ end }}
+    </div>
+
+    <div class="article-index__heading">
+      <div class="article-index__title-box" data-fit-title data-fit-title-min="32" data-fit-title-max="108">
+        <h3 data-fit-title-text><a href="{{ $page.RelPermalink }}" class="article-index__title-link">{{ $page.Title | $page.RenderString }}</a></h3>
+      </div>
+      {{ with $description }}
+        <p class="article-index__summary-reveal" aria-hidden="true">{{ . | plainify }}</p>
+      {{ end }}
+      <span class="article-index__arrow" aria-hidden="true">↗</span>
+    </div>
+  </div>
+</article>

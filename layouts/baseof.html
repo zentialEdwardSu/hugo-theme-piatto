@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html lang="{{ or site.Language.LanguageCode site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<html lang="{{ or site.Language.Locale site.Language.Lang }}" dir="{{ or site.Language.Direction `ltr` }}">
 <head>
   {{ partial "head.html" . }}
+  {{- with (templates.Defer (dict "key" "global")) }}
+    {{- partial "head/css.html" . }}
+  {{- end }}
 </head>
-<body class="bg-white dark:bg-gray-900 sm:px-4 max-w-[1024px] mx-auto">
-  <header>
-    {{  partial "header.html" . }}
-  </header>
-  <main id="content" class="min-h-frame px-4 sm:px-8">
-    {{  block "main" . }}{{ end }}
-  </main>
-  <footer>
-    {{  partial "footer.html" . }}
-  </footer>
+<body>
+  <a href="#content" class="fixed left-4 top-4 z-50 -translate-y-24 rounded-ui border border-line bg-surface px-4 py-3 font-semibold text-ink transition-transform focus:translate-y-0">Skip to content</a>
+  <div class="site-frame">
+    <header class="site-header">
+      {{ partial "header.html" . }}
+    </header>
+    <main id="content" class="min-h-frame">
+      {{ block "main" . }}{{ end }}
+    </main>
+    <footer>
+      {{ partial "footer.html" . }}
+    </footer>
+  </div>
+  {{ partial "material-icon-templates.html" . }}
+  {{ partial "head/js.html" . }}
 </body>
-{{ partial "head/js.html"}}
 </html>

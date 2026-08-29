@@ -1,0 +1,47 @@
+{{- $seo := partial "seo/data.html" . -}}
+{{- $websiteID := printf "%s#website" site.Home.Permalink -}}
+{{- $pageID := printf "%s#webpage" $seo.canonical -}}
+{{- $website := dict
+  "@type" "WebSite"
+  "@id" $websiteID
+  "url" site.Home.Permalink
+  "name" $seo.siteTitle
+  "description" (site.Params.description | default $seo.description | plainify)
+  "inLanguage" site.Language.Lang
+-}}
+{{- $pageType := "WebPage" -}}
+{{- if not .IsPage }}{{ $pageType = "CollectionPage" }}{{ end -}}
+{{- $webpage := dict
+  "@type" $pageType
+  "@id" $pageID
+  "url" $seo.canonical
+  "name" $seo.pageTitle
+  "description" $seo.description
+  "isPartOf" (dict "@id" $websiteID)
+  "inLanguage" site.Language.Lang
+-}}
+{{- with $seo.image -}}
+  {{- $webpage = merge $webpage (dict "primaryImageOfPage" (dict "@type" "ImageObject" "url" .)) -}}
+{{- end -}}
+{{- $graph := slice $website $webpage -}}
+{{- if $seo.isArticle -}}
+  {{- $article := dict
+    "@type" "BlogPosting"
+    "@id" (printf "%s#article" $seo.canonical)
+    "url" $seo.canonical
+    "headline" $seo.pageTitle
+    "description" $seo.description
+    "datePublished" (.PublishDate.Format `2006-01-02T15:04:05Z07:00`)
+    "dateModified" (.Lastmod.Format `2006-01-02T15:04:05Z07:00`)
+    "author" (dict "@type" "Person" "name" $seo.author)
+    "mainEntityOfPage" (dict "@id" $pageID)
+    "isPartOf" (dict "@id" $websiteID)
+    "wordCount" $seo.wordCount
+    "inLanguage" site.Language.Lang
+  -}}
+  {{- with $seo.image }}{{ $article = merge $article (dict "image" .) }}{{ end -}}
+  {{- with $seo.keywords }}{{ $article = merge $article (dict "keywords" (delimit . `, `)) }}{{ end -}}
+  {{- $graph = $graph | append $article -}}
+{{- end -}}
+{{- $schema := dict "@context" "https://schema.org" "@graph" $graph -}}
+<script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>

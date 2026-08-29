@@ -1,0 +1,22 @@
+<div class="article-index mx-auto w-full pb-16">
+  {{ partial "page-header.html" . }}
+
+  <div class="article-index__labels" aria-hidden="true">
+    <span>Date / tags / category</span>
+    <span>Details</span>
+    <span>Title</span>
+  </div>
+
+  <div class="article-index__list">
+    {{ range (.Pages.ByPublishDate.Reverse.GroupByDate "2006") }}
+      <section class="article-index__year-group" aria-labelledby="year-{{ .Key }}">
+        <h2 id="year-{{ .Key }}" class="article-index__year">{{ .Key }}</h2>
+        <div class="article-index__year-items">
+          {{ range .Pages }}
+            {{ partial "article-index-item.html" (dict "page" .) }}
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  </div>
+</div>

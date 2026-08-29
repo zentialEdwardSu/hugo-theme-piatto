@@ -1,94 +1,80 @@
 {{ define "main" }}
-<div class="container mx-auto w-full max-w-4xl lg:max-w-5xl">
-  <!-- show info when device is to narrow -->
-  <div class="xs:hidden block rounded-lg bg-red-200 p-2 text-slate-800">
-    <i class="ti ti-alert-circle"></i>
-    <span class="font-bold">
-      The device is too narrow, the article shows that it may be affected!
-    </span> 
-  </div>
-  <div class="flex flex-col gap-y-3 sm:p-6 mt-6 sm:mx-2 mx-0">
-    {{ if .Params.cover}}
-    <div class=" w-full">
-    {{ if .Params.KeepOrigin}}
-      <img src="{{.Params.cover}}" class="mx-auto rounded-lg"/>
-    {{else}}
-      {{ $cover := .Resources.Get .Params.cover }}
-      {{ if $cover }}
-      {{ $resized := $cover.Fit "1240x1240 webp" }}
-      <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="mx-auto rounded-lg" />
+{{ $withToc := default false (default .Site.Params.WithToc .Params.WithToc) }}
+<div class="article-single mx-auto w-full pb-16{{ if $withToc }} article-single--with-toc{{ end }}">
+  <article class="article-single__grid">
+    <header class="article-single__header pt-12 sm:pt-16">
+      {{ if .Params.cover }}
+        <div class="mb-8 w-full">
+          {{ if .Params.KeepOrigin }}
+            <img src="{{ .Params.cover }}" alt="{{ .Title }}" class="mx-auto h-auto max-w-full rounded-ui border border-line" />
+          {{ else }}
+            {{ $cover := .Resources.Get .Params.cover }}
+            {{ if $cover }}
+              {{ $resized := $cover.Fit "1240x1240 webp" }}
+              <img src="{{ $resized.RelPermalink }}" width="{{ $resized.Width }}" height="{{ $resized.Height }}" alt="{{ .Title }}" class="mx-auto h-auto max-w-full rounded-ui border border-line" />
+            {{ end }}
+          {{ end }}
+        </div>
       {{ end }}
-      {{end}}
-    </div>
-    {{ end }}
-    <h1 class="text-4xl font-semibold text-slate-800 dark:text-slate-100">
-      <a href="{{ .RelPermalink }}">{{ .Title | .RenderString }}</a>
-    </h1>
 
-    {{ with .Description }}
-    <h2 class="mt-4 mb-2 text-xl font-serif text-slate-600 dark:text-slate-300">
-      {{ . | $.Page.RenderString }}
-    </h2>
-    {{ end }}
+      <h1 class="text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">{{ .Title | .RenderString }}</h1>
+      {{ with .Description }}
+        <div class="mt-4 text-xl leading-8 text-muted">{{ . | $.Page.RenderString }}</div>
+      {{ end }}
 
-    {{ partial "time.html" . }}
-    {{ partial "taxonomies.html" .}}
+      <div class="mt-6">
+        {{ partial "time.html" . }}
+        {{ partial "taxonomies.html" . }}
+      </div>
+    </header>
 
-    {{if .GitInfo }}
-    {{$outOfDateMonths := .Site.Params.outOfDate }}
-    {{$currentTime := now }}
-    {{$lastEdit := .GitInfo.AuthorDate}}
-    {{ $unixres := sub $currentTime.Unix $lastEdit.Unix}}
-    <!-- for test we use minutes -->
-    {{ $monthres := 0 }}
-    {{ if hugo.IsProduction }}
-      {{ $monthres = div $unixres 2592000}}
-    {{ else }}
-      {{ $monthres = div $unixres 60}}
-    {{ end }}
-    {{$monthSinceLastEdit := math.Round $monthres}}
-    {{ if gt $monthSinceLastEdit $outOfDateMonths}}
-    <div class="rounded-lg px-2 py-2 bg-blue-200 mx-auto">
-      <i class="ti ti-exclamation-circle text-2xl align-middle"></i>
-      <span class="text-md align-middle">It has been more than <b>{{$monthSinceLastEdit}}</b> month(s) since the last edit, so the content of the article may be outdated.</span>
-    </div>
-    {{ end }}
+    {{ if .GitInfo }}
+      {{ $outOfDateMonths := .Site.Params.outOfDate }}
+      {{ $unixres := sub now.Unix .GitInfo.AuthorDate.Unix }}
+      {{ $monthSinceLastEdit := math.Round (div $unixres 2592000) }}
+      {{ if gt $monthSinceLastEdit $outOfDateMonths }}
+        <aside class="article-single__notice mt-8 rounded-ui border border-line border-l-4 border-l-amber-600 bg-warning-surface px-4 py-3 text-warning-ink">
+          <p class="leading-7"><strong>Possibly outdated.</strong> This article was last edited more than {{ $monthSinceLastEdit }} months ago.</p>
+        </aside>
+      {{ end }}
     {{ end }}
 
-    {{ if default false (default .Site.Params.WithToc .Params.WithToc) }}
-      <section class="prose prose-slate dark:prose-invert w-full max-w-4xl lg:max-w-5xl mt-6">
-        <h2 id="TocHead">Table of Contents</h2>
-        <aside>{{ .TableOfContents }}</aside>
-      </section>
-      <button
-        id="back-to-toc"
-        class="fixed bottom-8 right-8 py-2 px-3 bg-slate-500 text-white rounded-full shadow-lg hover:bg-slate-600 transition-colors group opacity-20 dark:opacity-80"
-        onclick="scrollToToc()"
-      >
-        <i class="ti ti-arrow-up text-lg"></i>
-        <!-- Tooltip -->
-        <span class="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-sm px-2 py-1 rounded whitespace-nowrap">
-          Back to TOC
-        </span>
-      </button>
-      {{partial "head/tocjs.html"}}
+    {{ if $withToc }}
+      <aside class="article-single__toc" aria-labelledby="article-toc-heading">
+        <h2 id="article-toc-heading" class="article-single__toc-heading">Table of contents</h2>
+        <div class="article-single__toc-content">
+          {{ if .Params.typst }}
+            {{ with .Resources.Get "generated/typst/toc.html" }}
+              {{ .Content }}
+            {{ else }}
+              {{ errorf "Typst output is missing for %s; run piatto typst build" $.File.Path }}
+            {{ end }}
+          {{ else }}
+            {{ .TableOfContents }}
+          {{ end }}
+        </div>
+      </aside>
     {{ end }}
 
+    <button id="back-to-top" type="button" class="fixed bottom-4 right-4 hidden h-11 w-11 items-center justify-center rounded-ui border border-line bg-surface text-ink transition-colors duration-150 hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" aria-label="Back to top" title="Back to top">
+      {{ partial "material-icon.html" (dict "name" "arrow_upward" "class" "h-5 w-5") }}
+    </button>
 
     {{ if .Params.typst }}
-    {{ $svgs := .Resources.Match "images/*.svg" }}
-      <div class="mx-auto mt-6">
-      {{ range $svgs }}
-          {{ .Content | safeHTML }}
-      {{end}}
-      </div>
+      {{ with .Resources.Get "generated/typst/style.css" }}
+        <style>{{ .Content | safeCSS }}</style>
+      {{ end }}
+      {{ range .Resources.Match "generated/typst/assets/*" }}{{ .Publish }}{{ end }}
+      {{ with .Resources.Get "generated/typst/body.html" }}
+        <div class="article-single__body mt-10 w-full">{{ .Content }}</div>
+      {{ else }}
+        {{ errorf "Typst output is missing for %s; run piatto typst build" $.File.Path }}
+      {{ end }}
     {{ else }}
-    <article class="mt-6 w-full max-w-4xl lg:max-w-5xl prose prose-slate dark:prose-invert prose-quoteless post-content">
-      {{ .Content | safeHTML }}
-    </article>
-  {{ end }}
-
-  </div>
-<div class="h-20"></div>
+      <div class="article-single__body prose prose-zinc mt-10 max-w-none dark:prose-invert post-content">
+        {{ .Content | safeHTML }}
+      </div>
+    {{ end }}
+  </article>
 </div>
 {{ end }}

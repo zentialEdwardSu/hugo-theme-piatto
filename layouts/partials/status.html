@@ -1,15 +1,25 @@
 {{ with . }}
-    {{ if eq "Planning" . }}
-    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Planning-1A5276">
-    {{ else if eq "Working" . }}
-    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Working-196F3D">
-    {{ else if eq "Pending" . }}
-    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Pending-B7950B">
-    {{ else if eq "Done" . }}
-    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Done-0E6655">
-    {{ else if eq "Canceled" . }}
-    <img alt="Static Badge" src="https://img.shields.io/badge/Status-Canceled-922B21">
-    {{ else }}
-    <img alt="Static Badge" src="https://img.shields.io/badge/{{ . }}">
-    {{ end }}
+  {{ $key := lower . }}
+  {{ $label := . }}
+  {{ $dotClass := "bg-muted" }}
+  {{ if eq $key "planning" }}
+    {{ $label = "Planning" }}
+    {{ $dotClass = "bg-blue-600 dark:bg-blue-300" }}
+  {{ else if in (slice "working" "doing") $key }}
+    {{ $label = "Working" }}
+    {{ $dotClass = "bg-emerald-600 dark:bg-emerald-300" }}
+  {{ else if eq $key "pending" }}
+    {{ $label = "Pending" }}
+    {{ $dotClass = "bg-amber-600 dark:bg-amber-300" }}
+  {{ else if eq $key "done" }}
+    {{ $label = "Done" }}
+    {{ $dotClass = "bg-teal-600 dark:bg-teal-300" }}
+  {{ else if in (slice "canceled" "cancelled") $key }}
+    {{ $label = "Canceled" }}
+    {{ $dotClass = "bg-red-700 dark:bg-red-300" }}
+  {{ end }}
+  <span class="inline-flex min-h-7 items-center gap-2 rounded-ui border border-line bg-surface px-2 py-1 text-xs font-medium text-muted">
+    <span class="h-2 w-2 {{ $dotClass }}" aria-hidden="true"></span>
+    {{ $label }}
+  </span>
 {{ end }}

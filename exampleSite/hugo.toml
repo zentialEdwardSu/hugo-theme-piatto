@@ -1,69 +1,113 @@
 baseURL = 'https://example.org/' # will usually be overwrote during build time
-languageCode = 'en-us'
+locale = 'en-US'
 title = 'Piattos Example Site '
 theme = "hugo-theme-piatto"
 copyright = "MIT"
 enableGitInfo = true
+enableRobotsTXT = true
 googleAnalytics = "The-G-MEASUREMENT_ID" # replace with your Google Analytics ID
 
+[build]
+  [build.buildStats]
+    enable = true
+  [[build.cachebusters]]
+    source = 'assets/notwatching/hugo_stats\.json'
+    target = 'css'
+  [[build.cachebusters]]
+    source = 'package(-lock)?\.json'
+    target = 'css'
+
+[module]
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+  [[module.mounts]]
+    disableWatch = true
+    source = 'hugo_stats.json'
+    target = 'assets/notwatching/hugo_stats.json'
+
+[security]
+  allowContent = ['^text/(html|markdown|css|plain)$', '^application/json$']
+  [security.exec]
+    allow = ['^(dart-)?sass$', '^go$', '^git$', '^node$', '^postcss$', '^tailwindcss$']
+
 [params]
-  name = "Hugo Theme Piatto"
-  description = "Try to be Simple but useful."
-  initials = "HP" # up-left icon
-  footercd = true # cd ../ at bottom
+  name = "Piatto"
+  description = "A flat Hugo theme for articles, projects, and Typst documents."
+  initials = "PT" # up-left icon
   showReadingTime=true # reading time
   search = true # if show search bar at main
   recentPosts = true # if show recent posts at main
   recentPostsCount = 4 # how much recent posts will be showed
   outOfDate = 2 # (months) 
 
+  [params.navigation]
+    showTaxonomies = true
+    taxonomyLabel = "Tags"
+    taxonomyURL = "/tags/"
+    tagsLabel = "Tags"
+    categoriesLabel = "Categories"
+
+    [[params.navigation.tabs]]
+      name = "Articles"
+      url = "/articles/"
+      listStyle = "rich"
+
+    [[params.navigation.tabs]]
+      name = "Projects"
+      url = "/projects/"
+      listStyle = "cards"
+      dataSource = "projects"
+
+    [[params.navigation.tabs]]
+      name = "Me"
+      url = "/me/"
+
   # social media params
   [[params.social]]
     name = "Twitter"
     link = "#"
-    icon = "ti ti-brand-x"
+    icon = "alternate_email"
 
   [[params.social]]
     name = "Github"
     link = "#"
-    icon = "ti ti-brand-github"
+    icon = "code"
   
   [[params.social]]
     name = "Gitlab"
     link = "#"
-    icon = "ti ti-brand-gitlab"
+    icon = "account_tree"
 
   [[params.social]]
     name = "Mail" 
     link = "#"
-    icon = "ti ti-mail"
+    icon = "mail"
 
   [[params.social]]
     name = "LinkedIn"
     link = "#"
-    icon = "ti ti-brand-linkedin"
-
-[menu]
-  [[menu.main]]
-    name = "Articles"
-    url = "/articles/"
-    weight = 1
-  [[menu.main]]
-    name = "Projects"
-    url = "/projects/"
-    weight = 2
-  [[menu.main]]
-    name = "Me"
-    url = "/me/"
-    weight = 3
+    icon = "badge"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "JSON", "LLMS", "LLMSFULL"]
+
+[outputFormats]
+  [outputFormats.LLMS]
+    mediaType = "text/plain"
+    baseName = "llms"
+    isPlainText = true
+    notAlternative = true
+  [outputFormats.LLMSFULL]
+    mediaType = "text/plain"
+    baseName = "llms-full"
+    isPlainText = true
+    notAlternative = true
 
 # syntax highlight settings
 [markup]
   [markup.highlight]
-    style = "dracula"
+    noClasses = false
   [markup.goldmark.renderer]
     # Enable to include inline HTML
     unsafe = true

@@ -1,0 +1,7 @@
+{{- $manifest := false -}}
+{{- if .Params.typst -}}
+  {{- with .Resources.Get "generated/typst/manifest.json" -}}
+    {{- $manifest = (. | transform.Unmarshal) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $manifest -}}

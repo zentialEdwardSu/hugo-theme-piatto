@@ -1,4 +1,5 @@
 ---
 title: Articles
-description: Collections of my thoughts and Posts
+description: Markdown, Typst, theme configuration, and content workflow examples grouped across publication years.
+listStyle: rich
 ---

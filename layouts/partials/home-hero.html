@@ -1,0 +1,17 @@
+{{- $page := . -}}
+<section class="home-hero" aria-label="Introduction">
+  <div class="home-hero__content">
+    {{- with $page.Params.heroHTML -}}
+      {{ . | safeHTML }}
+    {{- else -}}
+      {{- with $page.Content -}}
+        {{ . }}
+      {{- else -}}
+        <div class="home-hero__statement">
+          <h1>{{ $page.Site.Params.Description }}</h1>
+          <a href="#recent-posts" class="home-hero__jump">Browse recent posts</a>
+        </div>
+      {{- end -}}
+    {{- end -}}
+  </div>
+</section>

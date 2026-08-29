@@ -1,0 +1,21 @@
+{{- $homeSEO := partial "seo/data.html" . -}}
+# {{ $homeSEO.siteTitle }}
+
+> {{ $homeSEO.description | safeHTML }}
+
+Canonical site: {{ site.Home.Permalink }}
+Language: {{ site.Language.Lang }}
+
+## Main pages
+{{ range where site.RegularPages.ByTitle "Params.noindex" "ne" true -}}
+{{- $seo := partial "seo/data.html" . -}}
+- [{{ $seo.pageTitle | safeHTML }}]({{ $seo.canonical }}): {{ $seo.description | safeHTML }}
+{{ end -}}{{ "\n" }}
+
+## Feeds
+{{ with site.Home.OutputFormats.Get "RSS" -}}
+- [RSS feed]({{ .Permalink }})
+{{ end -}}
+{{ with site.Home.OutputFormats.Get "LLMSFULL" -}}
+- [Full machine-readable content]({{ .Permalink }})
+{{ end }}

@@ -1,47 +1,42 @@
 [
-    {
-      "name": "Bear Notes",
-      "description": "Quick note taking application on Mac for writing down instant thoughts, application on Mac for writing down instant thoughts",
-      "link": "https://bear.app/",
-      "icon": "https://blog.bear.app/wp-content/uploads/2018/10/bear-icon.png",
-      "tag": ["Productivity"],
-      "status": "Working"
-    },
-    {
-      "name": "Cloudflare",
-      "description": "Place for all my domains on the internet",
-      "link": "https://cloudflare.com",
-      "icon": "",
-      "tag": ["Webdev","hhh"]
-    },
-    {
-      "name": "Vercel",
-      "description": "Hosts frontend of projects including this website",
-      "link": "https://vercel.com/",
-      "icon": "",
-      "tag": []
-    },
-    {
-      "name": "GitHub",
-      "description": "Code hosting for all projects",
-      "link": "https://github.com/",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/2048px-Octicons-mark-github.svg.png",
-      "tag": ["Webdev"]
-    },
-    {
-      "name": "iTerm",
-      "description": "A definitely more functional terminal for Mac",
-      "link": "https://iterm2.com/",
-      "icon": "https://icons.iconarchive.com/icons/froyoshark/enkel/256/iTerm-icon.png",
-      "tag": ["Productivity"],
-      "status": "doing"
-    },
-    {
-      "name": "Figma",
-      "description": "Design tool for all design artifacts and social media handles",
-      "link": "https://www.figma.com/",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
-      "tag": ["Graphic Design"],
-      "status":"Pending"
-    }
-  ]
+  {
+    "name": "Piatto Theme",
+    "description": "A Hugo theme for Markdown articles, Typst documents, search, and project collections.",
+    "link": "https://github.com/zentialEdwardSu/hugo-theme-piatto",
+    "icon": "",
+    "status": "Working",
+    "tag": ["Hugo", "Theme"]
+  },
+  {
+    "name": "CLI Toolkit",
+    "description": "Cross-platform commands for creating, validating, renaming, compiling, and publishing article bundles.",
+    "link": "https://github.com/zentialEdwardSu/hugo-theme-piatto",
+    "icon": "",
+    "status": "Doing",
+    "tag": ["TypeScript", "CLI"]
+  },
+  {
+    "name": "Typst HTML Pipeline",
+    "description": "Native Typst-to-HTML compilation with scoped CSS, extracted assets, search text, and generated tables of contents.",
+    "link": "https://github.com/zentialEdwardSu/hugo-theme-piatto",
+    "icon": "",
+    "status": "Done",
+    "tag": ["Typst", "HTML"]
+  },
+  {
+    "name": "Example Content",
+    "description": "A growing collection of runnable articles covering syntax, configuration, navigation, and project data.",
+    "link": "https://github.com/zentialEdwardSu/hugo-theme-piatto/tree/main/exampleSite",
+    "icon": "",
+    "status": "Planning",
+    "tag": ["Documentation"]
+  },
+  {
+    "name": "Legacy Icon Font",
+    "description": "The previous runtime icon font was replaced by a small, local set of inline Material Symbols.",
+    "link": "https://github.com/zentialEdwardSu/hugo-theme-piatto",
+    "icon": "",
+    "status": "Canceled",
+    "tag": ["Assets"]
+  }
+]

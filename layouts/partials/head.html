@@ -1,34 +1,23 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<!-- Simple SEO -->
-<meta name="description" content="{{ .Description }}">
-<meta property="og:title" content="{{ .Title }}">
-<meta property="og:description" content="{{ .Description }}">
-<meta property="og:image" content="{{ .Params.image | absURL }}">
-<meta property="og:url" content="{{ .Permalink }}">
-<meta name="description" content="{{ .Description | default (.Summary | truncate 160) }}">
-<!-- end -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (() => {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.classList.toggle('dark', savedTheme === 'dark' || (!savedTheme && prefersDark));
+  })();
+</script>
+{{ partial "seo/head.html" . }}
 <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}" />
 
 <!-- googlesans -->
 {{ $fonts := resources.Get "css/fonts.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $fonts.RelPermalink }}" integrity="{{ $fonts.Data.Integrity }}">
 
-<!-- Compile separately -->
-{{ with resources.Get "css/style.css" | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ .RelPermalink }}">
-{{ end }}
 <link rel="stylesheet" href="{{ "css/custom.css" | relURL }}" />
-
-<!-- load tabler icons -->
-<link rel="stylesheet" href="{{ "css/tabler-icons.min.css" | relURL }}" >
 
 {{ if .Params.katex}}{{ partial "katex.html" . }}{{ end }}
 
 <!-- {{- if hugo.IsProduction | or (eq site.Params.env "production") }} -->
 
 <!-- {{- end -}} -->
-<!-- Site Title -->
-{{ $title := print .Site.Title " | " .Title }}
-{{ if .IsHome }}{{ $title = .Site.Title }}{{ end }}
-<title>{{ $title }}</title>

@@ -1,0 +1,69 @@
+{{- $siteTitle := site.Title | plainify | htmlUnescape | replaceRE `\s+` ` ` | strings.TrimSpace -}}
+{{- $pageTitle := .Title | default $siteTitle | plainify | htmlUnescape | replaceRE `\s+` ` ` | strings.TrimSpace -}}
+{{- if .IsHome }}{{ $pageTitle = $siteTitle }}{{ end -}}
+{{- $title := $pageTitle -}}
+{{- if not .IsHome -}}
+  {{- $title = printf "%s | %s" $pageTitle $siteTitle -}}
+{{- end -}}
+
+{{- $manifest := partial "typst/manifest.html" . -}}
+{{- $description := .Params.description | default "" -}}
+{{- if and (not $description) $manifest -}}
+  {{- $description = $manifest.summary | default "" -}}
+{{- end -}}
+{{- if and (not $description) .IsHome -}}
+  {{- $description = site.Params.description | default "" -}}
+{{- end -}}
+{{- if not $description -}}
+  {{- $description = .Summary | default "" -}}
+{{- end -}}
+{{- if not $description -}}
+  {{- $description = site.Params.description | default $siteTitle -}}
+{{- end -}}
+{{- $description = $description | plainify | htmlUnescape | replaceRE `\s+` ` ` | strings.TrimSpace | truncate 160 | htmlUnescape -}}
+
+{{- $canonical := .Permalink -}}
+{{- with .Params.canonicalURL }}{{ $canonical = . | absURL }}{{ end -}}
+{{- $image := .Params.image | default (.Params.cover | default "") -}}
+{{- $imageURL := "" -}}
+{{- if $image -}}
+  {{- with .Resources.Get $image -}}
+    {{- $imageURL = .Permalink -}}
+  {{- else -}}
+    {{- $imageURL = $image | absURL -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $author := .Params.author | default (site.Params.author | default (site.Params.name | default $siteTitle)) -}}
+{{- if reflect.IsMap $author -}}
+  {{- $author = index $author "name" | default $siteTitle -}}
+{{- end -}}
+{{- $author = printf "%v" $author | plainify | htmlUnescape | strings.TrimSpace -}}
+
+{{- $keywords := .Params.keywords | default (.Params.tags | default (slice)) -}}
+{{- $robots := .Params.robots | default "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" -}}
+{{- if .Params.noindex -}}
+  {{- $robots = "noindex,nofollow" -}}
+{{- end -}}
+{{- $locale := site.Language.Locale | default site.Language.Lang | default "en" | replaceRE `-` `_` -}}
+{{- $isArticle := and .IsPage (or (eq .Section "articles") (eq .Type "articles")) -}}
+{{- $wordCount := .WordCount -}}
+{{- if and $manifest $manifest.wordCount -}}
+  {{- $wordCount = $manifest.wordCount -}}
+{{- end -}}
+
+{{- return (dict
+  "author" $author
+  "canonical" $canonical
+  "description" $description
+  "image" $imageURL
+  "imageAlt" (.Params.imageAlt | default $pageTitle)
+  "isArticle" $isArticle
+  "keywords" $keywords
+  "locale" $locale
+  "pageTitle" $pageTitle
+  "robots" $robots
+  "siteTitle" $siteTitle
+  "title" $title
+  "wordCount" $wordCount
+) -}}

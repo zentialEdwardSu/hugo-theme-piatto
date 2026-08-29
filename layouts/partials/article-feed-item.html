@@ -1,0 +1,52 @@
+{{- $page := .page -}}
+{{- $fullDate := .fullDate | default false -}}
+{{- $typstManifest := partial "typst/manifest.html" $page -}}
+{{- $description := $page.Description | default "" -}}
+{{- if not $description -}}
+  {{- if $typstManifest -}}
+    {{- $description = $typstManifest.summary -}}
+  {{- else -}}
+    {{- $description = $page.Summary | plainify -}}
+  {{- end -}}
+{{- end -}}
+{{- $readingTime := $page.ReadingTime -}}
+{{- if $typstManifest }}{{ $readingTime = $typstManifest.readingTime }}{{ end -}}
+
+<article class="py-7 sm:py-8" style="border-top: 1px solid var(--piatto-line);">
+  <a href="{{ $page.RelPermalink }}" class="group flex min-w-0 items-start gap-5 sm:gap-8">
+    <div class="min-w-0 flex-1">
+      <h3 class="line-clamp-2 text-xl font-bold leading-7 tracking-tight text-ink transition-colors duration-150 group-hover:text-accent sm:text-2xl sm:leading-8">
+        {{ $page.Title | $page.RenderString }}
+      </h3>
+
+      {{ with $description }}
+        <p class="mt-2 line-clamp-2 text-sm leading-6 text-muted sm:text-base sm:leading-7">{{ . | plainify }}</p>
+      {{ end }}
+
+      <div class="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm tabular-nums text-muted">
+        {{ if $page.Date }}
+          {{ $dateMachine := $page.Date | time.Format "2006-01-02T15:04:05-07:00" }}
+          <time datetime="{{ $dateMachine }}">
+            {{ if $fullDate }}{{ $page.Date.Format "Jan 2, 2006" }}{{ else }}{{ $page.Date.Format "Jan 2" }}{{ end }}
+          </time>
+        {{ end }}
+        {{ if $page.Site.Params.showReadingTime }}
+          <span aria-hidden="true">·</span>
+          <span>{{ if eq $readingTime 0 }}&lt; 1{{ else }}{{ $readingTime }}{{ end }} min read</span>
+        {{ end }}
+        {{ with $page.Params.tags }}
+          <span class="hidden rounded-full bg-soft px-2.5 py-1 text-xs text-muted sm:inline-flex">{{ index . 0 }}</span>
+        {{ end }}
+      </div>
+    </div>
+
+    {{ with $page.Params.cover }}
+      {{ with $page.Resources.Get . }}
+        {{ $thumbnail := .Fill "480x320 webp q82" }}
+        <span class="h-24 w-24 shrink-0 overflow-hidden bg-soft sm:h-32 sm:w-48" aria-hidden="true">
+          <img src="{{ $thumbnail.RelPermalink }}" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover transition-opacity duration-150 group-hover:opacity-90" />
+        </span>
+      {{ end }}
+    {{ end }}
+  </a>
+</article>

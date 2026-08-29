@@ -28,4 +28,4 @@ About me and other format of me.
 - The blue car is mine.
 - Is this book yours or mine?
 
-<i class="ti ti-alert-circle"></i>
+{{< icon name="warning" >}}

@@ -1,0 +1,69 @@
+{{- $page := .page -}}
+{{- $dataSource := .dataSource | default "" -}}
+<div class="pb-16">
+  {{ partial "page-header.html" $page }}
+
+  <ul class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    {{ if $dataSource }}
+      {{ $items := index hugo.Data $dataSource }}
+      {{ if not $items }}{{ warnf "Card list data source %q was not found for %s" $dataSource $page.Path }}{{ end }}
+      {{ range $items }}
+        <li>
+          <a href="{{ .link }}" target="_blank" rel="noopener noreferrer" class="group flex h-full min-w-0 gap-4 rounded-ui border border-line bg-surface p-5 transition-colors duration-150 hover:border-accent">
+            {{ if .icon }}
+              <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-ui border border-line bg-soft p-2">
+                <img src="{{ .icon }}" alt="" width="56" height="56" loading="lazy" class="h-full w-full object-contain" />
+              </span>
+            {{ else }}
+              <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-ui border border-line bg-soft text-2xl font-bold uppercase text-ink" aria-hidden="true">{{ substr .name 0 1 }}</span>
+            {{ end }}
+
+            <span class="min-w-0 flex-1">
+              <span class="flex items-start justify-between gap-3">
+                <span class="text-lg font-semibold text-ink transition-colors duration-150 group-hover:text-accent">{{ .name }}</span>
+                {{ partial "material-icon.html" (dict "name" "open_in_new" "class" "h-5 w-5 shrink-0 text-muted") }}
+              </span>
+              <span class="mt-2 block">
+                {{ with .status }}{{ partial "status.html" . }}{{ else }}{{ partial "status.html" "No status" }}{{ end }}
+              </span>
+              {{ with .description }}<span class="mt-3 line-clamp-3 block leading-6 text-muted">{{ . }}</span>{{ end }}
+              {{ with .tag }}
+                <span class="mt-4 flex flex-wrap gap-2" aria-label="Tags">
+                  {{ range . }}<span class="rounded-ui border border-line px-2 py-1 text-xs text-muted">#{{ . }}</span>{{ end }}
+                </span>
+              {{ end }}
+            </span>
+          </a>
+        </li>
+      {{ end }}
+    {{ else }}
+      {{ range $page.Pages.ByTitle }}
+        {{ $item := . }}
+        <li>
+          <a href="{{ .RelPermalink }}" class="group flex h-full min-w-0 gap-4 rounded-ui border border-line bg-surface p-5 transition-colors duration-150 hover:border-accent">
+            {{ with .Params.icon }}
+              <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-ui border border-line bg-soft p-2">
+                <img src="{{ . | relURL }}" alt="" width="56" height="56" loading="lazy" class="h-full w-full object-contain" />
+              </span>
+            {{ else }}
+              <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-ui border border-line bg-soft text-2xl font-bold uppercase text-ink" aria-hidden="true">{{ substr .Title 0 1 }}</span>
+            {{ end }}
+            <span class="min-w-0 flex-1">
+              <span class="flex items-start justify-between gap-3">
+                <span class="text-lg font-semibold text-ink transition-colors duration-150 group-hover:text-accent">{{ .Title }}</span>
+                {{ partial "material-icon.html" (dict "name" "arrow_forward" "class" "h-5 w-5 shrink-0 text-muted") }}
+              </span>
+              {{ with .Params.status }}<span class="mt-2 block">{{ partial "status.html" . }}</span>{{ end }}
+              {{ with .Description }}<span class="mt-3 line-clamp-3 block leading-6 text-muted">{{ . | $item.RenderString }}</span>{{ end }}
+              {{ with .Params.tags }}
+                <span class="mt-4 flex flex-wrap gap-2" aria-label="Tags">
+                  {{ range . }}<span class="rounded-ui border border-line px-2 py-1 text-xs text-muted">#{{ . }}</span>{{ end }}
+                </span>
+              {{ end }}
+            </span>
+          </a>
+        </li>
+      {{ end }}
+    {{ end }}
+  </ul>
+</div>

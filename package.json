@@ -1,9 +1,42 @@
 {
+  "name": "hugo-theme-piatto",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "piatto": "dist/piatto.js"
+  },
+  "scripts": {
+    "build": "npm run tool:build && node dist/piatto.js build",
+    "dev": "npm run tool:build && node dist/piatto.js dev",
+    "check": "npm run tool:build && node dist/piatto.js check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "tool:build": "tsup"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "dependencies": {
+    "@chenglou/pretext": "^0.0.8",
+    "@iarna/toml": "^2.2.5",
+    "@myriaddreamin/typst-ts-node-compiler": "0.8.0-rc3",
+    "chokidar": "^4.0.3",
+    "commander": "^14.0.0",
+    "hast-util-to-html": "^9.0.5",
+    "hast-util-to-text": "^4.0.2",
+    "postcss": "^8.5.26",
+    "postcss-prefix-selector": "^2.1.1",
+    "undici": "^7.29.0",
+    "yaml": "^2.8.1"
+  },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.5",
-    "tailwindcss": "^3.4.17",
-    "typography": "^0.16.24"
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "^24.3.0",
+    "tailwindcss": "^4.3.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   }
 }

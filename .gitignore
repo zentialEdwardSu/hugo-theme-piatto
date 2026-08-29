@@ -1,4 +1,14 @@
-public/
-__pycache__/
-.direnv/
+# Dependencies and local environments
 node_modules/
+.direnv/
+__pycache__/
+
+# Hugo build output and resource caches
+public/
+**/resources/_gen/
+hugo_stats.json
+.hugo_build.lock
+
+# Test and Typst generated output
+coverage/
+**/generated/typst/

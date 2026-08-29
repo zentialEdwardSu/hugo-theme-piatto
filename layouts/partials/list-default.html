@@ -1,0 +1,89 @@
+<div class="mx-auto w-full max-w-5xl pb-16">
+  {{ if eq .Kind "taxonomy" }}
+    {{ $tagsPage := site.GetPage "/tags" }}
+    {{ $categoriesPage := site.GetPage "/categories" }}
+    <header class="max-w-3xl pb-10 pt-16 sm:pb-12 sm:pt-24">
+      <h1 class="text-4xl font-bold tracking-tight text-ink sm:text-5xl">{{ .Site.Params.Navigation.TaxonomyLabel | default (.Site.Params.Navigation.TagsLabel | default "Tags") }}</h1>
+    </header>
+
+    <div class="taxonomy-hub">
+      {{ with $tagsPage }}
+        <section aria-label="{{ site.Params.Navigation.TagsLabel | default "Tags" }}">
+          <ul class="taxonomy-cloud">
+            {{ range .Pages.ByTitle }}
+              <li>
+                <a href="{{ .RelPermalink }}" class="taxonomy-cloud__item">
+                  <span>{{ .LinkTitle }}</span><sup>{{ len .Pages }}</sup>
+                </a>
+              </li>
+            {{ end }}
+          </ul>
+        </section>
+      {{ end }}
+
+      {{ with $categoriesPage }}
+        <section class="taxonomy-hub__group" aria-labelledby="taxonomy-categories-heading">
+          <h2 id="taxonomy-categories-heading" class="taxonomy-hub__heading">{{ site.Params.Navigation.CategoriesLabel | default "Categories" }}</h2>
+          <ul class="taxonomy-cloud">
+            {{ range .Pages.ByTitle }}
+              <li>
+                <a href="{{ .RelPermalink }}" class="taxonomy-cloud__item">
+                  <span>{{ .LinkTitle }}</span><sup>{{ len .Pages }}</sup>
+                </a>
+              </li>
+            {{ end }}
+          </ul>
+        </section>
+      {{ end }}
+    </div>
+  {{ else }}
+    {{ partial "page-header.html" . }}
+    <div class="space-y-12">
+      {{ range (.Pages.ByPublishDate.Reverse.GroupByDate "2006") }}
+        <section aria-labelledby="year-{{ .Key }}">
+          <h2 id="year-{{ .Key }}" class="text-2xl font-semibold tabular-nums text-ink">{{ .Key }}</h2>
+          <ul>
+            {{ range .Pages }}
+              {{ $page := . }}
+              {{ $typstManifest := partial "typst/manifest.html" . }}
+              <li class="py-6">
+                <article class="grid min-w-0 gap-4 sm:grid-cols-[1fr_auto] sm:items-start">
+                  <div class="min-w-0">
+                    <h3 class="text-xl font-semibold leading-7">
+                      <a href="{{ .RelPermalink }}" class="text-ink underline decoration-transparent underline-offset-4 transition-colors duration-150 hover:text-accent hover:decoration-current">{{ .Title | .RenderString }}</a>
+                    </h3>
+                    <div class="mt-2 max-w-3xl leading-7 text-muted">
+                      {{ with .Description }}
+                        {{ . | $page.RenderString }}
+                      {{ else }}
+                        {{ if $typstManifest }}
+                          {{ $typstManifest.summary }}
+                        {{ else }}
+                          {{ with .Summary }}{{ . | $page.RenderString }}{{ end }}
+                        {{ end }}
+                      {{ end }}
+                    </div>
+                    {{ partial "taxonomies.html" . }}
+                  </div>
+
+                  <div class="flex flex-wrap gap-x-2 text-sm tabular-nums text-muted sm:justify-end sm:pt-1">
+                    {{ if .Date }}
+                      {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+                      <time datetime="{{ $dateMachine }}">{{ .Date.Format ($.Site.Params.DateFormatList | default "Jan 02") }}</time>
+                    {{ end }}
+                    {{ if $.Site.Params.showReadingTime }}
+                      {{ $readingTime := .ReadingTime }}
+                      {{ with partial "typst/manifest.html" . }}{{ $readingTime = .readingTime }}{{ end }}
+                      <span aria-hidden="true">/</span>
+                      <span>{{ $readingTime }} min</span>
+                    {{ end }}
+                  </div>
+                </article>
+              </li>
+            {{ end }}
+          </ul>
+        </section>
+      {{ end }}
+    </div>
+  {{ end }}
+</div>

@@ -1,156 +1,214 @@
 ---
-author : "Hugo Authors"
-title : "Markdown Syntax Guide"
-date : "2019-03-11"
-description : "Sample article showcasing basic Markdown syntax and formatting for HTML elements."
-tags : [
-    "markdown",
-    "css",
-    "html",
-    "tag1",
-    "tag2",
-]
-categories : [
-    "themes",
-    "syntax",
-]
-withToc : true
-last_edit :  2022-02-01 15:24
+title: Markdown and Shortcode Showcase
+date: 2023-10-05
+draft: false
+author: Piatto Authors
+description: A visual reference for Markdown, Goldmark extensions, trusted HTML, Hugo shortcodes, and every shortcode included with Piatto.
+tags: [Markdown, Shortcode, Hugo]
+categories: [Writing]
+withToc: true
+cover: images/markdown-cover.png
 ---
 
-This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.
+This article is a visual reference for the Markdown syntax supported by Piatto's default configuration. It also renders the theme's `hint`, `icon`, and `bilibili` shortcodes instead of merely showing their source.
+
 <!--more-->
 
 ## Headings
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+The page title comes from the `title` front matter field, so article content normally starts at level two. All six Markdown heading levels are shown below.
 
-# H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6
+# Heading level one
+## Heading level two
+### Heading level three
+#### Heading level four
+##### Heading level five
+###### Heading level six
 
-## Paragraph
+## Paragraphs and line breaks
 
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
+A blank line starts a new paragraph. A normal source line break remains part of the same paragraph.<br>
+Two trailing spaces or an HTML `<br>` element create a hard line break.
 
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
+A backslash escapes Markdown punctuation: \*this is not italic\* and \# this is not a heading.
+
+## Emphasis, deletion, and inline code
+
+This sentence contains *italic text*, **bold text**, ***bold italic text***, ~~deleted text~~, and `npm exec -- piatto dev`.
+
+Markdown accepts Unicode text such as cafe, pi, and celebratory symbols. Browsers collapse repeated spaces according to normal HTML rules.
+
+## Links
+
+- Inline link: [Hugo](https://gohugo.io/ "Hugo website")
+- Automatic link: <https://gohugo.io/>
+- Email address: <hello@example.com>
+- Reference link: [Piatto repository][piatto]
+- In-page link: [Jump to the table](#tables)
+
+[piatto]: https://github.com/zentialEdwardSu/hugo-theme-piatto "Piatto"
+
+## Images
+
+Keep important images in the article bundle and reference them relative to `index.md`. Piatto's image render hook finds the page resource and generates a width-limited WebP version.
+
+![Abstract cover reused from an earlier example](images/markdown-cover.png "Bundled page resource")
+
+Remote image URLs also work, but local page resources are more reliable and can be processed by Hugo.
 
 ## Blockquotes
 
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
+> A useful example should show the final result as well as the source syntax.
+>
+> Blockquotes may still contain **emphasis**, `code`, and lists:
+>
+> - First item
+> - Second item
 
-### Blockquote without attribution
+Blockquotes can be nested:
 
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-> **Note** that you can use *Markdown syntax* within a blockquote.
+> First level
+>> Second level
 
-### Blockquote with attribution
+## Lists
 
-> Don't communicate by sharing memory, share memory by communicating.<br>
-> — <cite>Rob Pike[^1]</cite>
+Unordered list:
 
-[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
+- Article metadata
+- Markdown content
+  - Image resources
+  - Download resources
+- Generated output
+
+Ordered list:
+
+1. Create the page bundle
+2. Write and preview the article
+3. Validate and publish it
+
+An ordered list may start at a specific number:
+
+4. Build the site
+5. Deploy `public/`
+
+Task list:
+
+- [x] Add a title and publication date
+- [x] Write a useful description
+- [ ] Publish the article
+
+## Definition lists
+
+Page bundle
+: A directory whose `index.md` file owns adjacent images and downloads.
+
+Shortcode
+: Hugo syntax that invokes a reusable template component from content.
+: A term may have more than one definition.
 
 ## Tables
 
-Tables aren't part of the core Markdown spec, but Hugo supports them out-of-the-box.
+| Alignment | Markdown | Typical content |
+| :--- | :---: | ---: |
+| Left | `:---` | Text |
+| Center | `:---:` | Status |
+| Right | `---:` | Numbers |
 
-   Name | Age
---------|------
-    Bob | 27
-  Alice | 23
+Table cells can contain *italic text*, **bold text**, [links](https://gohugo.io/), and `code`.
 
-### Inline Markdown within tables
+## Code
 
-| Italics   | Bold     | Code   |
-| --------  | -------- | ------ |
-| *italics* | **bold** | `code` |
+Inline code is useful for commands and filenames such as `hugo.toml`. Fenced blocks accept a language and Hugo highlighting options.
 
-## Code Blocks
-
-### Code block with backticks
-
-```html {linenos=true}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
-</html>
+```ts {linenos=true,hl_lines=[2]}
+const theme = 'piatto';
+const command = `npm exec -- ${theme} check`;
+console.log(command);
 ```
 
-### Code block indented with four spaces
+Indenting a block by four spaces also creates code:
 
-    <!doctype html>
-    <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <title>Example HTML5 Document</title>
-    </head>
-    <body>
-      <p>Test</p>
-    </body>
-    </html>
+    npm exec -- piatto post list
+    npm exec -- piatto post validate
 
-### Code block with Hugo's internal highlight shortcode
-{{< highlight html >}}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
-</html>
+Hugo's built-in `highlight` shortcode is available as well:
+
+{{< highlight toml >}}
+[params]
+  showReadingTime = true
 {{< /highlight >}}
 
-## List Types
+## Horizontal rules
 
-### Ordered List
+The following three forms are equivalent. Piatto currently hides article horizontal rules visually, but they remain part of the document structure.
 
-1. First item
-2. Second item
-3. Third item
+---
 
-### Unordered List
+***
 
-* List item
-* Another item
-* And another item
+___
 
-### Nested list
+## Footnotes
 
-* Fruit
-  * Apple
-  * Orange
-  * Banana
-* Dairy
-  * Milk
-  * Cheese
+A sentence can include a short footnote.[^short] Footnotes can also contain several paragraphs.[^long]
 
-### List with checkbox
+[^short]: This is a short footnote.
 
-- [x] Create a Hugo site
-- [x] Add content
-- [ ] Add a style
+[^long]: This is the first paragraph of a longer footnote.
 
-## Other Elements — abbr, sub, sup, kbd, mark
+    Indentation continues the footnote and may include `inline code`.
 
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
+## Trusted HTML
 
-H<sub>2</sub>O
+The example site enables `markup.goldmark.renderer.unsafe`, so trusted content can contain HTML.
 
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
+<details>
+  <summary>Open the HTML example</summary>
+  <p><abbr title="HyperText Markup Language">HTML</abbr> supports <mark>highlighting</mark>, H<sub>2</sub>O, x<sup>2</sup>, <kbd>Ctrl</kbd> + <kbd>K</kbd>, and <samp>sample output</samp>.</p>
+</details>
 
-Press <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd></kbd> to end the session.
+Do not enable or inject raw HTML when authors or content are not trusted.
 
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+## Theme shortcodes
+
+### Hint
+
+The first positional argument selects `Info`, `Warning`, or `Danger`; the optional second argument supplies a heading. The current template inserts the inner value as trusted HTML, so use HTML tags when formatting it.
+
+{{% hint Info "Information" %}}
+This is an <code>Info</code> hint with <strong>HTML formatting</strong>.
+{{% /hint %}}
+
+{{% hint Warning "Before cleaning" %}}
+Run the Typst build again after <code>piatto typst clean</code>.
+{{% /hint %}}
+
+{{% hint Danger "Destructive work" %}}
+Do not overwrite uncommitted article resources.
+{{% /hint %}}
+
+### Icon
+
+The `icon` shortcode accepts the filename of a vendored Material Symbol: {{< icon name="warning" >}} `warning`, {{< icon name="check" >}} `check`, and {{< icon name="code" >}} `code`.
+
+```go-html-template
+{{</* icon name="warning" */>}}
+```
+
+### Bilibili
+
+The `bilibili` shortcode accepts either a BV identifier or an AV identifier and emits a responsive player.
+
+```go-html-template
+{{</* bilibili BV1kE41147oo */>}}
+```
+
+{{< bilibili BV1kE41147oo >}}
+
+## Hugo built-in shortcodes
+
+Hugo also provides built-in shortcodes such as `figure`, `highlight`, `ref`, `relref`, `youtube`, `vimeo`, and `instagram`. Review Hugo's privacy settings before embedding third-party media.
+
+## Invisible authoring controls
+
+Markdown comments remain in the HTML source but are not displayed. Hugo's `<!--more-->` marker controls where `.Summary` ends; this article includes one immediately after its introduction.

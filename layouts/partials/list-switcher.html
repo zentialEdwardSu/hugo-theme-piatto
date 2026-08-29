@@ -1,0 +1,33 @@
+{{- $page := . -}}
+{{- $style := $page.Params.listStyle | default "" -}}
+{{- $dataSource := $page.Params.dataSource | default "" -}}
+{{- $currentURL := strings.TrimSuffix "/" $page.RelPermalink -}}
+
+{{- range $page.Site.Params.Navigation.Tabs -}}
+  {{- $tabURL := .url | relURL | strings.TrimSuffix "/" -}}
+  {{- if eq $tabURL $currentURL -}}
+    {{- if and (not $style) .listStyle -}}{{- $style = .listStyle -}}{{- end -}}
+    {{- if and (not $dataSource) .dataSource -}}{{- $dataSource = .dataSource -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not $style) (eq $page.Kind "section") -}}
+  {{- if eq $page.Section "articles" -}}
+    {{- $style = "rich" -}}
+  {{- else if eq $page.Section "projects" -}}
+    {{- $style = "cards" -}}
+    {{- if not $dataSource -}}{{- $dataSource = "projects" -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $style = lower ($style | default "default") -}}
+{{- if eq $style "rich" -}}
+  {{- partial "list-rich.html" $page -}}
+{{- else if or (eq $style "cards") (eq $style "card") -}}
+  {{- partial "list-cards.html" (dict "page" $page "dataSource" $dataSource) -}}
+{{- else -}}
+  {{- if ne $style "default" -}}
+    {{- warnf "Unknown listStyle %q on %s; using default" $style $page.Path -}}
+  {{- end -}}
+  {{- partial "list-default.html" $page -}}
+{{- end -}}

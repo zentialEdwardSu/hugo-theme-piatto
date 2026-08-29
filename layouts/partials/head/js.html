@@ -1,35 +1,13 @@
-<!-- {{- with resources.Get "js/main.js" }}
-  {{- if eq hugo.Environment "development" }}
-    {{- with . | js.Build }}
-      <script src="{{ .RelPermalink }}"></script>
-    {{- end }}
-  {{- else }}
-    {{- $opts := dict "minify" true }}
-    {{- with . | js.Build $opts | fingerprint }}
-      <script src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous"></script>
-    {{- end }}
-  {{- end }}
-{{- end }} -->
 {{ partial "google_analytics.html" . }}
-<script src="/js/main.js"></script>
-<script src="/js/fastsearch.js"></script>
-<script src="/js/fuse.min.js"></script><!-- download and copy over fuse.min.js file from fusejs.io -->
-{{ $codeScript := resources.Get "js/code-copy.js" | resources.Minify }}
-<script src="{{ $codeScript.RelPermalink }}"></script>
-<script>
-  console.log("Script from js.html");
-
-  SetCollpaseButton();
-  SetThemeToggle();
-
-  // Apply theme settings
-  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
-      themeToggle.checked = true
-      console.log("Apply dark")
-  } else {
-      document.documentElement.classList.remove('dark')
-      themeToggle.checked = false
-      console.log("Apply light")
-  }  
-</script>
+{{ $scriptOptions := dict "targetPath" "js/main.js" "format" "iife" "target" "es2018" "minify" (not hugo.IsDevelopment) }}
+{{ $script := resources.Get "js/main.js" | js.Build $scriptOptions }}
+{{ if hugo.IsProduction }}{{ $script = $script | fingerprint }}{{ end }}
+<script
+  src="{{ $script.RelPermalink }}"
+  {{ with $script.Data.Integrity }}integrity="{{ . }}" crossorigin="anonymous"{{ end }}
+  defer
+></script>
+{{ if and .IsHome .Site.Params.Search }}
+  <script src="{{ "js/fuse.min.js" | relURL }}" defer></script>
+  <script src="{{ "js/fastsearch.js" | relURL }}" defer></script>
+{{ end }}

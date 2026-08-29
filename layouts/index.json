@@ -1,5 +1,12 @@
 {{- $.Scratch.Add "index" slice -}}
 {{- range .Site.RegularPages -}}
-    {{- $.Scratch.Add "index" (dict "title" .Title "tags" .Params.tags "categories" .Params.categories "description" .Params.description "permalink" .Permalink "date" .Date "section" .Section) -}}
+    {{- $typstManifest := partial "typst/manifest.html" . -}}
+    {{- $description := .Params.description -}}
+    {{- $content := .Plain -}}
+    {{- if $typstManifest -}}
+      {{- $description = $typstManifest.summary -}}
+      {{- $content = $typstManifest.plainText -}}
+    {{- end -}}
+    {{- $.Scratch.Add "index" (dict "title" .Title "tags" .Params.tags "categories" .Params.categories "description" $description "content" $content "permalink" .RelPermalink "date" .Date "section" .Section) -}}
 {{- end -}}
 {{- $.Scratch.Get "index" | jsonify -}}

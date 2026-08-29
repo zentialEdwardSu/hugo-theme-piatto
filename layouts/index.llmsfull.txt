@@ -1,0 +1,33 @@
+{{- $homeSEO := partial "seo/data.html" . -}}
+# {{ $homeSEO.siteTitle }}
+
+> {{ $homeSEO.description | safeHTML }}
+
+Source: {{ site.Home.Permalink }}
+Language: {{ site.Language.Lang }}
+
+{{ range where site.RegularPages.ByPublishDate.Reverse "Params.noindex" "ne" true }}
+{{- $seo := partial "seo/data.html" . }}
+---
+
+## {{ $seo.pageTitle | safeHTML }}
+
+URL: {{ $seo.canonical }}
+{{ with .PublishDate }}Published: {{ .Format "2006-01-02" }}
+{{ end -}}
+{{ with .Lastmod }}Updated: {{ .Format "2006-01-02" }}
+{{ end -}}
+{{ with $seo.author }}Author: {{ . }}
+{{ end -}}
+{{ with .Params.tags }}Topics: {{ delimit . ", " }}
+{{ end }}
+
+> {{ $seo.description | safeHTML }}
+
+{{ if .Params.typst -}}
+  {{- with partial "typst/manifest.html" . }}{{ .plainText }}{{ end -}}
+{{- else -}}
+  {{- .Plain -}}
+{{- end }}
+
+{{ end }}

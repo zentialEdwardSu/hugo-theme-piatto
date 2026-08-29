@@ -1,8 +1,11 @@
 baseURL = 'https://example.org/'
-languageCode = 'en-us'
+locale = 'en-US'
 title = 'My New Hugo Site'
+
+[security]
+  allowContent = ['^text/(html|markdown|css|plain)$', '^application/json$']
 
 [module]
   [module.hugoVersion]
     extended = true
-    min = "0.116.0"
+    min = "0.165.0"
