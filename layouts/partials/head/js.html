@@ -1,4 +1,7 @@
 {{ partial "google_analytics.html" . }}
+{{ if and .IsHome .Site.Params.Search }}
+  <script src="{{ "js/fuse.min.js" | relURL }}" defer></script>
+{{ end }}
 {{ $scriptOptions := dict "targetPath" "js/main.js" "format" "iife" "target" "es2018" "minify" (not hugo.IsDevelopment) }}
 {{ $script := resources.Get "js/main.js" | js.Build $scriptOptions }}
 {{ if hugo.IsProduction }}{{ $script = $script | fingerprint }}{{ end }}
@@ -7,7 +10,3 @@
   {{ with $script.Data.Integrity }}integrity="{{ . }}" crossorigin="anonymous"{{ end }}
   defer
 ></script>
-{{ if and .IsHome .Site.Params.Search }}
-  <script src="{{ "js/fuse.min.js" | relURL }}" defer></script>
-  <script src="{{ "js/fastsearch.js" | relURL }}" defer></script>
-{{ end }}
