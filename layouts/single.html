@@ -1,28 +1,28 @@
 {{ define "main" }}
 {{ $withToc := default false (default .Site.Params.WithToc .Params.WithToc) }}
-<div class="article-single mx-auto w-full pb-16{{ if $withToc }} article-single--with-toc{{ end }}">
+<div class="article-single{{ if $withToc }} article-single--with-toc{{ end }}">
   <article class="article-single__grid">
-    <header class="article-single__header pt-12 sm:pt-16">
+    <header class="article-single__header">
       {{ if .Params.cover }}
-        <div class="mb-8 w-full">
+        <div class="article-single__cover">
           {{ if .Params.KeepOrigin }}
-            <img src="{{ .Params.cover }}" alt="{{ .Title }}" class="mx-auto h-auto max-w-full rounded-ui border border-line" />
+            <img src="{{ .Params.cover }}" alt="{{ .Title }}" class="article-single__cover-image" />
           {{ else }}
             {{ $cover := .Resources.Get .Params.cover }}
             {{ if $cover }}
               {{ $resized := $cover.Fit "1240x1240 webp" }}
-              <img src="{{ $resized.RelPermalink }}" width="{{ $resized.Width }}" height="{{ $resized.Height }}" alt="{{ .Title }}" class="mx-auto h-auto max-w-full rounded-ui border border-line" />
+              <img src="{{ $resized.RelPermalink }}" width="{{ $resized.Width }}" height="{{ $resized.Height }}" alt="{{ .Title }}" class="article-single__cover-image" />
             {{ end }}
           {{ end }}
         </div>
       {{ end }}
 
-      <h1 class="text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">{{ .Title | .RenderString }}</h1>
+      <h1 class="page-title article-single__title">{{ .Title | .RenderString }}</h1>
       {{ with .Description }}
-        <div class="mt-4 text-xl leading-8 text-muted">{{ . | $.Page.RenderString }}</div>
+        <div class="article-single__description">{{ . | $.Page.RenderString }}</div>
       {{ end }}
 
-      <div class="mt-6">
+      <div class="article-single__metadata">
         {{ partial "time.html" . }}
         {{ partial "taxonomies.html" . }}
       </div>
@@ -33,8 +33,8 @@
       {{ $unixres := sub now.Unix .GitInfo.AuthorDate.Unix }}
       {{ $monthSinceLastEdit := math.Round (div $unixres 2592000) }}
       {{ if gt $monthSinceLastEdit $outOfDateMonths }}
-        <aside class="article-single__notice mt-8 rounded-ui border border-line border-l-4 border-l-amber-600 bg-warning-surface px-4 py-3 text-warning-ink">
-          <p class="leading-7"><strong>Possibly outdated.</strong> This article was last edited more than {{ $monthSinceLastEdit }} months ago.</p>
+        <aside class="article-single__notice">
+          <p ><strong>Possibly outdated.</strong> This article was last edited more than {{ $monthSinceLastEdit }} months ago.</p>
         </aside>
       {{ end }}
     {{ end }}
@@ -56,8 +56,8 @@
       </aside>
     {{ end }}
 
-    <button id="back-to-top" type="button" class="fixed bottom-4 right-4 hidden h-11 w-11 items-center justify-center rounded-ui border border-line bg-surface text-ink transition-colors duration-150 hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" aria-label="Back to top" title="Back to top">
-      {{ partial "material-icon.html" (dict "name" "arrow_upward" "class" "h-5 w-5") }}
+    <button id="back-to-top" type="button" class="back-to-top" aria-label="Back to top" title="Back to top">
+      {{ partial "material-icon.html" (dict "name" "arrow_upward") }}
     </button>
 
     {{ if .Params.typst }}
@@ -66,12 +66,12 @@
       {{ end }}
       {{ range .Resources.Match "generated/typst/assets/*" }}{{ .Publish }}{{ end }}
       {{ with .Resources.Get "generated/typst/body.html" }}
-        <div class="article-single__body mt-10 w-full">{{ .Content }}</div>
+        <div class="article-single__body">{{ .Content }}</div>
       {{ else }}
         {{ errorf "Typst output is missing for %s; run piatto typst build" $.File.Path }}
       {{ end }}
     {{ else }}
-      <div class="article-single__body prose prose-zinc mt-10 max-w-none dark:prose-invert post-content">
+      <div class="article-single__body post-content prose prose-zinc max-w-none dark:prose-invert">
         {{ .Content | safeHTML }}
       </div>
     {{ end }}

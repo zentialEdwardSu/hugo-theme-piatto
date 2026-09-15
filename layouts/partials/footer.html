@@ -1,12 +1,12 @@
 <div class="site-footer">
   <div class="site-footer__grid">
-    <p class="footer">{{ .Site.Copyright }} {{ now.Format "2006" }}</p>
+    <p class="site-footer__copyright">{{ .Site.Copyright }} {{ now.Format "2006" }}</p>
     {{ with .Site.Params.Social }}
       <ul class="site-footer__social" aria-label="Social links">
         {{ range . }}
           <li>
-            <a class="footer-social" {{ with .rel }}rel="{{ . }}"{{ else }}rel="noopener noreferrer"{{ end }} href="{{ .link }}" target="_blank" aria-label="{{ .name }}" title="{{ .name }}">
-              {{ partial "material-icon.html" (dict "name" .icon "class" "h-5 w-5") }}
+            <a class="site-footer__social-link" {{ with .rel }}rel="{{ . }}"{{ else }}rel="noopener noreferrer"{{ end }} href="{{ .link }}" target="_blank" aria-label="{{ .name }}" title="{{ .name }}">
+              {{ partial "material-icon.html" (dict "name" .icon) }}
             </a>
           </li>
         {{ end }}
@@ -14,8 +14,8 @@
     {{ end }}
   </div>
 
-  <p class="powerby">
-    Powered by <a class="text-ink underline decoration-line underline-offset-4 hover:text-accent" href="https://gohugo.io">Hugo</a>
-    and <a class="text-ink underline decoration-line underline-offset-4 hover:text-accent" href="https://tailwindcss.com">Tailwind CSS</a>.
+  <p class="site-footer__credits">
+    Powered by <a href="https://gohugo.io">Hugo</a>
+    and <a href="https://tailwindcss.com">Tailwind CSS</a>.
   </p>
 </div>

@@ -8,32 +8,34 @@
       id="smbt"
       data-collapse-toggle="navbar-default"
       type="button"
-      class="primary-nav__toggle md:hidden"
+      class="primary-nav__toggle"
       aria-controls="navbar-default"
       aria-expanded="false"
     >
       <span class="sr-only">Open main menu</span>
-      {{ partial "material-icon.html" (dict "name" "menu" "class" "h-5 w-5") }}
+      {{ partial "material-icon.html" (dict "name" "menu") }}
     </button>
 
-    <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+    <div class="primary-nav__panel" id="navbar-default">
       <ul class="primary-nav__links">
         {{ $currentPage := . }}
         {{ range $index, $item := .Site.Menus.main }}
-          {{ $isActive := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.RelPermalink .URL) }}
+          {{ $menuURL := partial "site-url.html" .URL }}
+          {{ $isActive := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq $currentPage.RelPermalink $menuURL) }}
           <li>
             <a
-              href="{{ .URL }}"
+              href="{{ $menuURL }}"
               {{ if $isActive }}aria-current="page"{{ end }}
               class="primary-nav__link {{ if $isActive }}is-active{{ end }}"
             >{{ .Name }}</a>
           </li>
         {{ end }}
         {{ range .Site.Params.Navigation.Tabs }}
-          {{ $tabURL := .url | relURL }}
+          {{ $tabURL := partial "site-url.html" .url }}
           {{ $normalizedURL := strings.TrimSuffix "/" $tabURL }}
           {{ $currentURL := strings.TrimSuffix "/" $currentPage.RelPermalink }}
-          {{ $isActive := or (eq $currentURL $normalizedURL) (and (ne $normalizedURL "") (ne $normalizedURL "/") (strings.HasPrefix $currentURL (printf "%s/" $normalizedURL))) }}
+          {{ $homeURL := strings.TrimSuffix "/" $currentPage.Site.Home.RelPermalink }}
+          {{ $isActive := or (eq $currentURL $normalizedURL) (and (ne $normalizedURL "") (ne $normalizedURL $homeURL) (strings.HasPrefix $currentURL (printf "%s/" $normalizedURL))) }}
           <li>
             <a
               href="{{ $tabURL }}"
@@ -48,7 +50,7 @@
           {{ $taxonomyURL := .Site.Params.Navigation.TaxonomyURL | default "/tags/" }}
           <li>
             <a
-              href="{{ $taxonomyURL | relURL }}"
+              href="{{ partial "site-url.html" $taxonomyURL }}"
               {{ if $isActive }}aria-current="page"{{ end }}
               class="primary-nav__link {{ if $isActive }}is-active{{ end }}"
             >{{ .Site.Params.Navigation.TaxonomyLabel | default (.Site.Params.Navigation.TagsLabel | default "Tags") }}</a>
@@ -56,9 +58,9 @@
         {{ end }}
         <li>
           <label for="darkmode-toggle" class="primary-nav__theme" title="Toggle color theme">
-            <input name="darkmode-toggle" id="darkmode-toggle" type="checkbox" class="peer sr-only" aria-label="Use dark mode">
-            {{ partial "material-icon.html" (dict "name" "light_mode" "class" "h-6 w-6 peer-checked:hidden") }}
-            {{ partial "material-icon.html" (dict "name" "dark_mode" "class" "hidden h-6 w-6 peer-checked:block") }}
+            <input name="darkmode-toggle" id="darkmode-toggle" type="checkbox" class="sr-only" aria-label="Use dark mode">
+            {{ partial "material-icon.html" (dict "name" "light_mode" "class" "primary-nav__sun") }}
+            {{ partial "material-icon.html" (dict "name" "dark_mode" "class" "primary-nav__moon") }}
           </label>
         </li>
       </ul>

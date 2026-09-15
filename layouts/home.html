@@ -9,7 +9,6 @@
   {{ if $.Site.Params.RecentPosts }}
   <section id="recent-posts" class="editorial-section editorial-index" aria-labelledby="recent-posts-heading">
     <div class="editorial-index__intro">
-      <!-- <p class="editorial-label">Article index</p> -->
       <h2 id="recent-posts-heading">Recent posts</h2>
     </div>
     <div class="editorial-index__list">
@@ -35,12 +34,12 @@
   {{ if $.Site.Params.Search }}
   <section class="editorial-section editorial-search" aria-labelledby="search-heading">
     <div>
-      <!-- <p class="editorial-label">Search</p> -->
       <h2 id="search-heading"><label for="searchInput">Find an article</label></h2>
     </div>
     <div id="fastSearch" class="editorial-search__field">
       <input
         id="searchInput"
+        {{ with .OutputFormats.Get "JSON" }}data-search-index="{{ .RelPermalink }}"{{ end }}
         type="search"
         placeholder="Enter a title, category, or tag"
         aria-describedby="search-help"

@@ -1,0 +1,9 @@
+{{- $label := . -}}
+{{- $key := lower . -}}
+{{- if eq $key "planning" -}}{{- $label = "Planning" -}}
+{{- else if in (slice "working" "doing") $key -}}{{- $label = "Working" -}}
+{{- else if eq $key "pending" -}}{{- $label = "Pending" -}}
+{{- else if eq $key "done" -}}{{- $label = "Done" -}}
+{{- else if in (slice "canceled" "cancelled") $key -}}{{- $label = "Canceled" -}}
+{{- end -}}
+{{- return $label -}}

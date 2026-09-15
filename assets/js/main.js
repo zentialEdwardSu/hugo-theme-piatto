@@ -1,7 +1,11 @@
 import { layout, prepare } from '@chenglou/pretext';
+import { createPageScope } from './page-scope.js';
+import { initializeMath } from './math.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const copyResetTimers = new WeakMap();
+const searchIndexes = new Map();
+const searchQueries = new Map();
 
 const copyStates = {
     idle: { icon: 'content-copy', label: 'Copy code' },
@@ -13,7 +17,8 @@ function scrollBehavior() {
     return reducedMotion.matches ? 'auto' : 'smooth';
 }
 
-function setCopyButtonState(button, state) {
+function setCopyButtonState(button, state, scope) {
+    if (!scope.active) return;
     const { icon, label } = copyStates[state];
     const template = document.getElementById(`material-icon-${icon}`);
     const resetTimer = copyResetTimers.get(button);
@@ -34,7 +39,7 @@ function setCopyButtonState(button, state) {
     button.setAttribute('aria-label', label);
 
     if (state !== 'idle') {
-        const timer = window.setTimeout(() => setCopyButtonState(button, 'idle'), 2000);
+        const timer = scope.timeout(() => setCopyButtonState(button, 'idle', scope), 2000);
         copyResetTimers.set(button, timer);
     }
 }
@@ -76,7 +81,7 @@ async function copyCode(text) {
     fallbackCopy(text);
 }
 
-function initializeCodeCopy() {
+function initializeCodeCopy(scope) {
     document.querySelectorAll(':where(.post-content, .typst-content) > pre').forEach((pre) => {
         if (pre.parentElement?.classList.contains('highlight')) {
             return;
@@ -100,23 +105,24 @@ function initializeCodeCopy() {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'copy-button';
-        setCopyButtonState(button, 'idle');
+        setCopyButtonState(button, 'idle', scope);
 
-        button.addEventListener('click', async () => {
+        scope.on(button, 'click', async () => {
             try {
                 await copyCode(code.textContent ?? '');
-                setCopyButtonState(button, 'copied');
+                setCopyButtonState(button, 'copied', scope);
             } catch (error) {
                 console.error('Failed to copy code:', error);
-                setCopyButtonState(button, 'failed');
+                setCopyButtonState(button, 'failed', scope);
             }
         });
 
         highlight.appendChild(button);
+        scope.cleanup(() => button.remove());
     });
 }
 
-function initializeMenu() {
+function initializeMenu(scope) {
     const menuButton = document.querySelector('[data-collapse-toggle="navbar-default"]');
     const menu = document.getElementById('navbar-default');
 
@@ -124,15 +130,14 @@ function initializeMenu() {
         return;
     }
 
-    menuButton.addEventListener('click', () => {
-        const willOpen = menu.classList.contains('hidden');
-        menu.classList.toggle('hidden', !willOpen);
-        menu.classList.toggle('block', willOpen);
+    scope.on(menuButton, 'click', () => {
+        const willOpen = !menu.classList.contains('is-open');
+        menu.classList.toggle('is-open', willOpen);
         menuButton.setAttribute('aria-expanded', String(willOpen));
     });
 }
 
-function initializeThemeToggle() {
+function initializeThemeToggle(scope) {
     const themeToggle = document.getElementById('darkmode-toggle');
 
     if (!themeToggle) {
@@ -146,7 +151,7 @@ function initializeThemeToggle() {
     };
 
     syncToggle();
-    themeToggle.addEventListener('change', () => {
+    scope.on(themeToggle, 'change', () => {
         const theme = themeToggle.checked ? 'dark' : 'light';
         localStorage.setItem('theme', theme);
         document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -154,7 +159,7 @@ function initializeThemeToggle() {
     });
 }
 
-function initializeBackToTop() {
+function initializeBackToTop(scope) {
     const button = document.getElementById('back-to-top');
 
     if (!button) {
@@ -164,26 +169,25 @@ function initializeBackToTop() {
     let updateQueued = false;
     const updateVisibility = () => {
         const isVisible = window.scrollY > window.innerHeight;
-        button.classList.toggle('hidden', !isVisible);
-        button.classList.toggle('inline-flex', isVisible);
+        button.classList.toggle('is-visible', isVisible);
         updateQueued = false;
     };
 
-    window.addEventListener('scroll', () => {
+    scope.on(window, 'scroll', () => {
         if (!updateQueued) {
-            window.requestAnimationFrame(updateVisibility);
+            scope.frame(updateVisibility);
             updateQueued = true;
         }
     }, { passive: true });
 
-    button.addEventListener('click', () => {
+    scope.on(button, 'click', () => {
         window.scrollTo({ top: 0, behavior: scrollBehavior() });
     });
 
     updateVisibility();
 }
 
-function initializeTableOfContents() {
+function initializeTableOfContents(scope) {
     const links = Array.from(document.querySelectorAll(
         '.article-single__toc-content :where(#TableOfContents, .typst-toc) a[href^="#"]',
     ));
@@ -245,32 +249,19 @@ function initializeTableOfContents() {
 
     const queueActiveLinkUpdate = () => {
         if (updateFrame === 0) {
-            updateFrame = window.requestAnimationFrame(updateActiveLink);
+            updateFrame = scope.frame(updateActiveLink);
         }
     };
 
-    entries.forEach(({ link, target }) => {
-        link.addEventListener('click', (event) => {
-            const targetId = link.getAttribute('href');
-
-            if (!targetId) {
-                return;
-            }
-
-            event.preventDefault();
-            setActiveLink(link);
-            target.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
-            history.pushState(null, '', targetId);
-        });
-    });
-
-    window.addEventListener('scroll', queueActiveLinkUpdate, { passive: true });
-    window.addEventListener('resize', queueActiveLinkUpdate, { passive: true });
-    window.addEventListener('hashchange', queueActiveLinkUpdate);
+    // Native anchors (or Swup) own history and scrolling. Only observe position here.
+    scope.on(window, 'scroll', queueActiveLinkUpdate, { passive: true });
+    scope.on(window, 'resize', queueActiveLinkUpdate, { passive: true });
+    scope.on(window, 'hashchange', queueActiveLinkUpdate);
+    scope.on(window, 'popstate', queueActiveLinkUpdate);
     updateActiveLink();
 }
 
-function initializeArticleTitleFitting() {
+function initializeArticleTitleFitting(scope) {
     const boxes = Array.from(document.querySelectorAll('[data-fit-title]'));
     if (boxes.length === 0) {
         return;
@@ -360,13 +351,15 @@ function initializeArticleTitleFitting() {
         if (frame !== 0) {
             return;
         }
-        frame = window.requestAnimationFrame(fitAll);
+        frame = scope.frame(fitAll);
     };
 
     const observer = new ResizeObserver(queueFit);
     boxes.forEach((box) => observer.observe(box));
-    desktop.addEventListener('change', queueFit);
+    scope.cleanup(() => observer.disconnect());
+    scope.on(desktop, 'change', queueFit);
     document.fonts.ready.then(() => {
+        if (!scope.active) return;
         prepareTitles();
         queueFit();
     });
@@ -388,7 +381,7 @@ export function uniqueSearchResults(results, limit) {
     return uniqueResults;
 }
 
-function initializeSearch() {
+function initializeSearch(scope) {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
     const searchSummary = document.getElementById('hidegroup');
@@ -399,33 +392,28 @@ function initializeSearch() {
         return;
     }
 
-    let searchIndex;
-    let searchIndexPromise;
-
+    const indexURL = searchInput.dataset.searchIndex;
+    if (!indexURL) return;
+    let queryVersion = 0;
     const loadSearchIndex = () => {
-        if (!searchIndexPromise) {
-            searchIndexPromise = fetch('/index.json')
+        if (!searchIndexes.has(indexURL)) {
+            const pending = fetch(indexURL)
                 .then((response) => {
                     if (!response.ok) throw new Error(`Search index returned ${response.status}`);
                     return response.json();
                 })
-                .then((data) => {
-                    searchIndex = new window.Fuse(data, {
-                        shouldSort: true,
-                        location: 0,
-                        distance: 100,
-                        threshold: 0.4,
-                        minMatchCharLength: 2,
-                        keys: ['title', 'permalink', 'description', 'content', 'section', 'categories', 'tags'],
-                    });
-                })
-                .catch((error) => {
-                    noResults.textContent = 'Search is temporarily unavailable.';
-                    noResults.classList.remove('hidden');
-                    console.error(error);
-                });
+                .then((data) => new window.Fuse(data, {
+                    shouldSort: true,
+                    location: 0,
+                    distance: 100,
+                    threshold: 0.4,
+                    minMatchCharLength: 2,
+                    keys: ['title', 'permalink', 'description', 'content', 'section', 'categories', 'tags'],
+                }));
+            searchIndexes.set(indexURL, pending);
+            pending.catch(() => searchIndexes.delete(indexURL));
         }
-        return searchIndexPromise;
+        return searchIndexes.get(indexURL);
     };
 
     const clearResults = () => {
@@ -439,11 +427,11 @@ function initializeSearch() {
         link.href = result.permalink;
 
         const title = document.createElement('span');
-        title.className = 'cardtitle';
+        title.className = 'search-result__title';
         title.textContent = result.title;
 
         const description = document.createElement('span');
-        description.className = 'carddesc';
+        description.className = 'search-result__description';
         description.textContent = result.description || '';
 
         link.append(title, description);
@@ -451,14 +439,28 @@ function initializeSearch() {
     };
 
     const executeSearch = async (term) => {
+        searchQueries.set(indexURL, term);
+        const version = ++queryVersion;
         const query = term.trim();
         if (query.length < 2) {
             clearResults();
             return;
         }
 
-        await loadSearchIndex();
-        if (!searchIndex) return;
+        let searchIndex;
+        try {
+            searchIndex = await loadSearchIndex();
+        } catch (error) {
+            if (!scope.active || version !== queryVersion) return;
+            clearResults();
+            noResults.textContent = 'Search is temporarily unavailable.';
+            noResults.classList.remove('hidden');
+            console.error(error);
+            return;
+        }
+        if (!scope.active || version !== queryVersion) return;
+        noResults.textContent = 'No matching posts found.';
+        noResults.classList.add('hidden');
 
         const results = uniqueSearchResults(searchIndex.search(query), 5);
         searchResults.replaceChildren();
@@ -472,7 +474,7 @@ function initializeSearch() {
         const fragment = document.createDocumentFragment();
         results.forEach(({ item }) => {
             const listItem = document.createElement('li');
-            listItem.className = 'searchcard';
+            listItem.className = 'search-result';
             listItem.append(resultLink(item));
             fragment.append(listItem);
         });
@@ -483,18 +485,20 @@ function initializeSearch() {
     };
 
     searchInput.setAttribute('aria-controls', 'searchResults');
-    searchInput.addEventListener('input', () => void executeSearch(searchInput.value));
+    scope.on(searchInput, 'input', () => void executeSearch(searchInput.value));
 
-    document.addEventListener('keydown', (event) => {
+    scope.on(document, 'keydown', (event) => {
         if ((event.metaKey || event.ctrlKey) && event.key === '/') {
             event.preventDefault();
             searchInput.focus();
-            void loadSearchIndex();
+            void loadSearchIndex().catch(() => {});
             return;
         }
 
         if (event.key === 'Escape' && document.activeElement === searchInput) {
             searchInput.value = '';
+            searchQueries.delete(indexURL);
+            queryVersion++;
             clearResults();
             searchInput.blur();
             return;
@@ -516,12 +520,28 @@ function initializeSearch() {
             links[Math.min(index + 1, links.length - 1)].focus();
         }
     });
+
+    searchInput.value = searchQueries.get(indexURL) || '';
+    if (searchInput.value) return executeSearch(searchInput.value);
 }
 
-initializeMenu();
-initializeThemeToggle();
-initializeBackToTop();
-initializeTableOfContents();
-initializeArticleTitleFitting();
-initializeCodeCopy();
-initializeSearch();
+let pageScope;
+
+export function unmountPage() {
+    pageScope?.dispose();
+    pageScope = undefined;
+}
+
+export async function mountPage() {
+    unmountPage();
+    const scope = createPageScope();
+    pageScope = scope;
+    initializeMenu(scope);
+    initializeThemeToggle(scope);
+    initializeBackToTop(scope);
+    initializeTableOfContents(scope);
+    initializeArticleTitleFitting(scope);
+    initializeCodeCopy(scope);
+    await Promise.all([initializeSearch(scope), initializeMath(scope)]);
+    return scope.active;
+}

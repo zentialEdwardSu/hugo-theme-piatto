@@ -1,0 +1,28 @@
+@layer components {
+  html.is-changing #content {
+    transition: opacity 160ms ease;
+  }
+
+  html.is-leaving #content {
+    transition-duration: 120ms;
+  }
+
+  html.is-animating #content {
+    opacity: 0;
+  }
+
+  html.is-changing {
+    scroll-behavior: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}

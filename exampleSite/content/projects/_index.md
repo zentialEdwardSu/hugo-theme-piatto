@@ -1,6 +1,6 @@
 ---
 title: Projects
-description: Data-backed project cards demonstrating icon fallbacks, tags, and project states.
-listStyle: cards
+description: Themes, tools, and experiments for publishing on the web.
+listStyle: projects
 dataSource: projects
 ---

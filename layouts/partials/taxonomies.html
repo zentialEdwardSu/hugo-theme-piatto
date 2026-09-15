@@ -1,13 +1,13 @@
 {{ if or .Params.categories .Params.tags }}
-  <ul class="mt-4 flex flex-wrap gap-2" aria-label="Article taxonomy">
+  <ul class="term-list" aria-label="Article taxonomy">
     {{ range .Params.categories }}
       <li>
-        <a href="{{ (urlize (printf "categories/%s" .)) | relLangURL }}/" class="inline-flex min-h-9 items-center rounded-ui border border-line bg-soft px-2.5 py-1.5 text-sm font-medium text-ink transition-colors duration-150 hover:border-accent hover:text-accent" aria-label="Category: {{ . }}">{{ . }}</a>
+        <a href="{{ (urlize (printf "categories/%s" .)) | relLangURL }}/" class="term-link term-link--category" aria-label="Category: {{ . }}">{{ . }}</a>
       </li>
     {{ end }}
     {{ range .Params.tags }}
       <li>
-        <a href="{{ (urlize (printf "tags/%s" .)) | relLangURL }}/" class="inline-flex min-h-9 items-center rounded-ui border border-line bg-surface px-2.5 py-1.5 text-sm text-muted transition-colors duration-150 hover:border-accent hover:text-accent">#{{ . }}</a>
+        <a href="{{ (urlize (printf "tags/%s" .)) | relLangURL }}/" class="term-link">#{{ . }}</a>
       </li>
     {{ end }}
   </ul>

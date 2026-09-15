@@ -96,6 +96,7 @@ googleAnalytics = "G-MEASUREMENT_ID"
   twitterCreator = "@author"
 
   [params.navigation]
+    clientRouting = true
     showTaxonomies = true
     taxonomyLabel = "Topics"
     taxonomyURL = "/tags/"
@@ -110,7 +111,7 @@ googleAnalytics = "G-MEASUREMENT_ID"
     [[params.navigation.tabs]]
       name = "Projects"
       url = "/projects/"
-      listStyle = "cards"
+      listStyle = "projects"
       dataSource = "projects"
 
     [[params.navigation.tabs]]
@@ -245,9 +246,12 @@ Each `params.navigation.tabs` entry accepts `name`, `url`, and optional `listSty
 
 - `default`: compact, year-grouped entries; the taxonomy hub becomes tag and category clouds.
 - `rich`: a three-column editorial article index with summaries, terms, and cover reveals.
-- `cards` or `card`: a two-column card list from `data/<name>.json` or child pages.
+- `projects`: the default Projects directory, with large names, descriptions, optional real icons, and monochrome status and tags. Reads a data file in its original order or child pages by title.
+- `cards` or `card`: an optional two-column card list from `data/<name>.json` or child pages.
 
 `menu.main` and custom tabs can coexist, with menu entries rendered first. `showTaxonomies` controls the combined taxonomy tab.
+
+Internal HTML links use client navigation by default, with a short fade and browser history support. Set `params.navigation.clientRouting = false` to disable it, or add `data-no-swup` to individual links. Custom scripts can initialize on `piatto:page-load` and clean up on `piatto:before-page-replace`; both are document events carrying `detail.url`. Search and math initialize after navigation as well as on direct entry.
 
 ## SEO, search, and machine-readable output
 

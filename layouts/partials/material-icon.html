@@ -1,5 +1,5 @@
 {{- $name := .name -}}
-{{- $class := .class | default "h-5 w-5" -}}
+{{- $class := printf "icon %s" (.class | default "") | strings.TrimSpace -}}
 {{- $path := printf "icons/material/%s.svg" $name -}}
 {{- with resources.Get $path -}}
   {{- replaceRE `<svg[^>]*>` (printf `<svg class="%s" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false">` $class) .Content | safeHTML -}}

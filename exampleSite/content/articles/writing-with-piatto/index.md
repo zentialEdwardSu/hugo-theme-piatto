@@ -3,7 +3,7 @@ title: Writing Articles with Piatto
 date: 2025-05-18
 draft: false
 author: Piatto Authors
-description: A practical workflow for page bundles, front matter, custom navigation tabs, article indexes, taxonomies, and project cards.
+description: A practical workflow for page bundles, front matter, custom navigation tabs, article indexes, taxonomies, and project directories.
 tags: [Piatto, Hugo, CLI]
 categories: [Guides]
 withToc: true
@@ -149,7 +149,8 @@ Articles are sorted by publication date and grouped by year. The four core examp
 
 - `rich`: the three-column editorial list used by the main Articles section.
 - `default`: a compact year-grouped list used for taxonomy terms.
-- `cards`: a two-column card grid sourced from child pages or a data file.
+- `projects`: a large-type project directory sourced from child pages or a data file.
+- `cards` or `card`: an optional two-column card grid using the same sources.
 
 A section's `_index.md` value takes precedence over the matching navigation tab.
 
@@ -200,13 +201,13 @@ The latter reads `data/uses.json`. Traditional `menu.main` entries are still ren
 
 ## The Projects list
 
-The example site's Projects tab uses a data-backed card list:
+The example site's Projects tab uses a large-type directory:
 
 ```toml
 [[params.navigation.tabs]]
   name = "Projects"
   url = "/projects/"
-  listStyle = "cards"
+  listStyle = "projects"
   dataSource = "projects"
 ```
 
@@ -225,9 +226,9 @@ The corresponding `data/projects.json` is an array of objects:
 ]
 ```
 
-Always provide `name` and `link`. The `description`, `icon`, `status`, and `tag` fields are optional. Cards without an icon show the first letter of the name. Colored states recognize `Planning`, `Working`/`Doing`, `Pending`, `Done`, and `Canceled`/`Cancelled`.
+Always provide `name` and `link`. The `description`, `icon`, `status`, and `tag` fields are optional. On hover or keyboard focus, the directory slides a translucent icon behind the description. Missing icons use the first character of the project name instead. Status appears as text and recognizes `Planning`, `Working`/`Doing`, `Pending`, `Done`, and `Canceled`/`Cancelled`.
 
-Without `dataSource`, the `cards` layout reads child pages and uses their `title`, `description`, `icon`, `status`, and `tags`. Data files suit external projects; child pages suit projects that need local detail pages.
+Without `dataSource`, an explicitly selected `projects` layout reads child pages and uses their `title`, `description`, `icon`, `status`, and `tags`. Data order is preserved; child pages are sorted by title. External project links open in a new tab, while same-origin project links use client navigation. The legacy `cards` and `card` styles remain available with colored state badges and letter fallbacks.
 
 ## Checks before publishing
 

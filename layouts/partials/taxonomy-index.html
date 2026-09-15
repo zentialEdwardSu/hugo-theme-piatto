@@ -1,0 +1,39 @@
+{{- $title := .Title -}}
+{{- $groups := slice (dict "page" . "label" .Title) -}}
+{{- if in (slice "tags" "categories") .Data.Plural -}}
+  {{- $title = .Site.Params.Navigation.TaxonomyLabel | default (.Site.Params.Navigation.TagsLabel | default "Tags") -}}
+  {{- $groups = slice -}}
+  {{- with .Site.GetPage "/tags" -}}
+    {{- $groups = $groups | append (dict "page" . "label" (.Site.Params.Navigation.TagsLabel | default "Tags")) -}}
+  {{- end -}}
+  {{- with .Site.GetPage "/categories" -}}
+    {{- $groups = $groups | append (dict "page" . "label" (.Site.Params.Navigation.CategoriesLabel | default "Categories")) -}}
+  {{- end -}}
+{{- end -}}
+<div class="page-shell taxonomy-index">
+  <h1 class="sr-only">{{ $title }}</h1>
+  {{ range $groups }}
+    {{ $id := printf "taxonomy-%s-heading" .page.Data.Plural }}
+    <section class="taxonomy-index__group" aria-labelledby="{{ $id }}">
+      <div class="taxonomy-index__intro">
+        <h2 id="{{ $id }}">{{ .label }} <span class="taxonomy-index__total">{{ len .page.Pages }}</span></h2>
+      </div>
+      {{ if .page.Pages }}
+        <ul class="taxonomy-index__list">
+          {{ range .page.Pages.ByTitle }}
+            {{ $count := len .Pages }}
+            <li>
+              <a href="{{ .RelPermalink }}" class="taxonomy-index__link">
+                <span class="taxonomy-index__name">{{ .LinkTitle }}</span>
+                <span class="taxonomy-index__count">{{ $count }} <span class="sr-only">{{ if eq $count 1 }}page{{ else }}pages{{ end }}</span></span>
+                {{ partial "material-icon.html" (dict "name" "arrow_forward" "class" "taxonomy-index__arrow") }}
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      {{ else }}
+        <p class="taxonomy-index__empty">No {{ .label | lower }} yet.</p>
+      {{ end }}
+    </section>
+  {{ end }}
+</div>

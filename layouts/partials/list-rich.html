@@ -1,11 +1,5 @@
-<div class="article-index mx-auto w-full pb-16">
+<div class="page-shell article-index">
   {{ partial "page-header.html" . }}
-
-  <div class="article-index__labels" aria-hidden="true">
-    <span>Date / tags / category</span>
-    <span>Details</span>
-    <span>Title</span>
-  </div>
 
   <div class="article-index__list">
     {{ range (.Pages.ByPublishDate.Reverse.GroupByDate "2006") }}

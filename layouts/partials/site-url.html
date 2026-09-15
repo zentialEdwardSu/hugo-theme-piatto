@@ -1,0 +1,14 @@
+{{- /* Configured local paths are relative to the site's deployment root.
+      Already-prefixed Hugo permalinks and absolute URLs must not be prefixed twice. */ -}}
+{{- $value := . -}}
+{{- $url := urls.Parse $value -}}
+{{- $root := (urls.Parse site.BaseURL).Path | default "/" -}}
+{{- $result := $value -}}
+{{- if or $url.Scheme $url.Host (strings.HasPrefix $value "#") (strings.HasPrefix $value "?") -}}
+  {{- $result = $value -}}
+{{- else if and (ne $root "/") (or (eq $url.Path (strings.TrimSuffix "/" $root)) (strings.HasPrefix $url.Path $root)) -}}
+  {{- $result = $value -}}
+{{- else -}}
+  {{- $result = strings.TrimPrefix "/" $value | relURL -}}
+{{- end -}}
+{{- return $result -}}

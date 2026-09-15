@@ -4,6 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "strict": true,
+    "allowJs": true,
     "noEmit": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,

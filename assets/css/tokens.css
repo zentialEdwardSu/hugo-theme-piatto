@@ -1,0 +1,57 @@
+@theme {
+  --font-sans: "Google Sans", sans-serif;
+  --breakpoint-xs: 345px;
+  --color-canvas: var(--piatto-canvas);
+  --color-surface: var(--piatto-surface);
+  --color-ink: var(--piatto-ink);
+  --color-muted: var(--piatto-muted);
+  --color-line: var(--piatto-line);
+  --color-soft: var(--piatto-soft);
+  --color-accent: var(--piatto-accent);
+  --color-accent-strong: var(--piatto-accent-strong);
+  --color-warning-surface: var(--piatto-warning-surface);
+  --color-warning-ink: var(--piatto-warning-ink);
+  --color-danger-surface: var(--piatto-danger-surface);
+  --color-danger-ink: var(--piatto-danger-ink);
+  --radius-ui: 0;
+}
+
+:root {
+  color-scheme: light;
+  --piatto-canvas: #ffffff;
+  --piatto-surface: #ffffff;
+  --piatto-ink: #1e293b;
+  --piatto-muted: #64748b;
+  --piatto-line: #cbd5e1;
+  --piatto-soft: #f1f5f9;
+  --piatto-accent: #1e293b;
+  --piatto-accent-strong: #0f172a;
+  --piatto-warning-surface: #fffbeb;
+  --piatto-warning-ink: #92400e;
+  --piatto-danger-surface: #fef2f2;
+  --piatto-danger-ink: #991b1b;
+  --footer-font-size: 1rem;
+  --footer-powerby-font-size: 0.875rem;
+  --scroll-bar-width: 5px;
+  --piatto-width-site: 120rem;
+  --piatto-width-index: 90rem;
+  --piatto-width-content: 48rem;
+  --piatto-width-home: 80rem;
+  --piatto-nav-height: 5.25rem;
+}
+
+.dark {
+  color-scheme: dark;
+  --piatto-canvas: #0f172a;
+  --piatto-surface: #0f172a;
+  --piatto-ink: #e2e8f0;
+  --piatto-muted: #cbd5e1;
+  --piatto-line: #334155;
+  --piatto-soft: #1e293b;
+  --piatto-accent: #93c5fd;
+  --piatto-accent-strong: #bfdbfe;
+  --piatto-warning-surface: #422006;
+  --piatto-warning-ink: #fde68a;
+  --piatto-danger-surface: #450a0a;
+  --piatto-danger-ink: #fecaca;
+}

@@ -4,7 +4,7 @@
 {{- $currentURL := strings.TrimSuffix "/" $page.RelPermalink -}}
 
 {{- range $page.Site.Params.Navigation.Tabs -}}
-  {{- $tabURL := .url | relURL | strings.TrimSuffix "/" -}}
+  {{- $tabURL := partial "site-url.html" .url | strings.TrimSuffix "/" -}}
   {{- if eq $tabURL $currentURL -}}
     {{- if and (not $style) .listStyle -}}{{- $style = .listStyle -}}{{- end -}}
     {{- if and (not $dataSource) .dataSource -}}{{- $dataSource = .dataSource -}}{{- end -}}
@@ -15,14 +15,20 @@
   {{- if eq $page.Section "articles" -}}
     {{- $style = "rich" -}}
   {{- else if eq $page.Section "projects" -}}
-    {{- $style = "cards" -}}
-    {{- if not $dataSource -}}{{- $dataSource = "projects" -}}{{- end -}}
+    {{- $style = "projects" -}}
+    {{- if and (not $dataSource) (isset hugo.Data "projects") -}}{{- $dataSource = "projects" -}}{{- end -}}
   {{- end -}}
+{{- end -}}
+
+{{- if and (not $style) (eq $page.Kind "term") -}}
+  {{- $style = "rich" -}}
 {{- end -}}
 
 {{- $style = lower ($style | default "default") -}}
 {{- if eq $style "rich" -}}
   {{- partial "list-rich.html" $page -}}
+{{- else if eq $style "projects" -}}
+  {{- partial "list-projects.html" (dict "page" $page "dataSource" $dataSource) -}}
 {{- else if or (eq $style "cards") (eq $style "card") -}}
   {{- partial "list-cards.html" (dict "page" $page "dataSource" $dataSource) -}}
 {{- else -}}

@@ -6,13 +6,13 @@
     {{- partial "head/css.html" . }}
   {{- end }}
 </head>
-<body>
-  <a href="#content" class="fixed left-4 top-4 z-50 -translate-y-24 rounded-ui border border-line bg-surface px-4 py-3 font-semibold text-ink transition-transform focus:translate-y-0">Skip to content</a>
+<body data-client-routing="{{ ne site.Params.navigation.clientRouting false }}" data-site-root="{{ (urls.Parse site.BaseURL).Path | default "/" }}" data-routing-cache="{{ not hugo.IsDevelopment }}">
+  <a href="#content" class="skip-link">Skip to content</a>
   <div class="site-frame">
     <header class="site-header">
       {{ partial "header.html" . }}
     </header>
-    <main id="content" class="min-h-frame">
+    <main id="content" class="site-content" data-katex="{{ .Params.katex | default false }}">
       {{ block "main" . }}{{ end }}
     </main>
     <footer>

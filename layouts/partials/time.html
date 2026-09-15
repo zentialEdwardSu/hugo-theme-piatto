@@ -1,8 +1,8 @@
-<div class="flex flex-wrap gap-x-4 gap-y-2 text-sm tabular-nums text-muted">
+<div class="article-metadata">
   {{ if .Date }}
     {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-    <div class="inline-flex items-center gap-1.5">
-      {{ partial "material-icon.html" (dict "name" "calendar_month" "class" "h-5 w-5") }}
+    <div class="article-metadata__date">
+      {{ partial "material-icon.html" (dict "name" "calendar_month") }}
       <time datetime="{{ $dateMachine }}">{{ .Date.Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</time>
     </div>
   {{ end }}

@@ -10,12 +10,6 @@
 {{ partial "seo/head.html" . }}
 <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}" />
 
-<!-- googlesans -->
-{{ $fonts := resources.Get "css/fonts.css" | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $fonts.RelPermalink }}" integrity="{{ $fonts.Data.Integrity }}">
-
-<link rel="stylesheet" href="{{ "css/custom.css" | relURL }}" />
-
 {{ if .Params.katex}}{{ partial "katex.html" . }}{{ end }}
 
 <!-- {{- if hugo.IsProduction | or (eq site.Params.env "production") }} -->

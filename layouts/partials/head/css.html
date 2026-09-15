@@ -10,3 +10,5 @@
     {{- end }}
   {{- end }}
 {{- end }}
+{{- /* Site overrides load last, including overrides for the theme tokens. */}}
+<link rel="stylesheet" href="{{ "css/custom.css" | relURL }}">

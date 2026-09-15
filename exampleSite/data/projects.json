@@ -3,7 +3,7 @@
     "name": "Piatto Theme",
     "description": "A Hugo theme for Markdown articles, Typst documents, search, and project collections.",
     "link": "https://github.com/zentialEdwardSu/hugo-theme-piatto",
-    "icon": "",
+    "icon": "/images/projects/piatto.svg",
     "status": "Working",
     "tag": ["Hugo", "Theme"]
   },

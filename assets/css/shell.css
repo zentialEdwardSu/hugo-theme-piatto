@@ -1,0 +1,203 @@
+@layer components {
+  .skip-link {
+    @apply fixed left-4 top-4 z-50 -translate-y-24 rounded-ui border border-line bg-surface px-4 py-3 font-semibold text-ink transition-transform focus:translate-y-0;
+  }
+
+  .primary-nav__panel {
+    display: none;
+    width: 100%;
+  }
+
+  .site-footer__credits a {
+    @apply text-ink underline decoration-line underline-offset-4 hover:text-accent;
+  }
+
+  .site-footer__copyright {
+    font-size: var(--footer-font-size);
+  }
+
+  .site-footer__social-link {
+    font-size: var(--footer-font-size);
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--piatto-muted);
+    transition: opacity 150ms ease;
+  }
+
+  .site-footer__credits {
+    font-size: var(--footer-powerby-font-size);
+    margin-top: 1rem;
+  }
+
+  .site-frame {
+    width: min(100%, var(--piatto-width-site));
+    margin-inline: auto;
+    padding-inline: clamp(0.875rem, 2vw, 2.5rem);
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--piatto-canvas) 94%, transparent);
+  }
+
+  .primary-nav__inner {
+    min-height: var(--piatto-nav-height);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .primary-nav__brand {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: var(--piatto-ink);
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    transition: opacity 150ms ease;
+  }
+
+  .primary-nav__brand:hover,
+  .primary-nav__brand:focus-visible,
+  .primary-nav__link:hover,
+  .primary-nav__link:focus-visible {
+    opacity: 0.45;
+  }
+
+  .primary-nav__links {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--piatto-line);
+    padding-block: 0.5rem;
+  }
+
+  .primary-nav__link {
+    display: flex;
+    min-height: 2.75rem;
+    width: 100%;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--piatto-ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+    transition: opacity 150ms ease;
+  }
+
+  .primary-nav__link span {
+    color: var(--piatto-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .primary-nav__link.is-active {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.45rem;
+  }
+
+  .primary-nav__theme,
+  .primary-nav__toggle {
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    color: var(--piatto-muted);
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .primary-nav__theme:hover,
+  .primary-nav__toggle:hover {
+    color: var(--piatto-ink);
+  }
+
+  .site-footer {
+    margin-top: clamp(2rem, 3vw, 3rem);
+    padding-block: 2rem 3rem;
+    border-top: 1px solid var(--piatto-line);
+    color: var(--piatto-muted);
+    font-size: 0.8rem;
+  }
+
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .site-footer__social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .site-footer__social-link:hover {
+    opacity: 0.45;
+  }
+
+  @media (min-width: 48rem) {
+    .primary-nav__toggle {
+      display: none;
+    }
+
+    .primary-nav__links {
+      flex-direction: row;
+      align-items: center;
+      gap: clamp(1.25rem, 2.5vw, 3.5rem);
+      border-top: 0;
+      padding-block: 0;
+    }
+
+    .primary-nav__link {
+      width: auto;
+    }
+
+    .primary-nav__panel {
+      display: block;
+      width: auto;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .site-content {
+    min-height: calc(100dvh - 12rem);
+  }
+
+  .primary-nav__sun, .primary-nav__moon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .primary-nav__moon {
+    display: none;
+  }
+
+  .primary-nav__theme input:checked ~ .primary-nav__sun {
+    display: none;
+  }
+
+  .primary-nav__theme input:checked ~ .primary-nav__moon {
+    display: block;
+  }
+
+  .primary-nav__panel.is-open {
+    display: block;
+  }
+}

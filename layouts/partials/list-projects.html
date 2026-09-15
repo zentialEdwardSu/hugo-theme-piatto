@@ -1,0 +1,54 @@
+{{- $page := .page -}}
+{{- $items := slice -}}
+{{- if .dataSource -}}
+  {{- $items = index hugo.Data .dataSource | default slice -}}
+  {{- if not (isset hugo.Data .dataSource) -}}{{- warnf "Project list data source %q was not found for %s" .dataSource $page.Path -}}{{- end -}}
+{{- else -}}
+  {{- range $page.Pages.ByTitle -}}
+    {{- $items = $items | append (dict "name" .Title "description" (.Description | .RenderString) "link" .RelPermalink "icon" (.Params.icon | default "") "status" (.Params.status | default "") "tag" (.Params.tags | default slice)) -}}
+  {{- end -}}
+{{- end -}}
+<div class="page-shell project-index">
+  {{ partial "page-header.html" $page }}
+  {{ if $items }}
+    <ul class="project-index__list">
+      {{ range $items }}
+        {{- $url := urls.Parse .link -}}
+        {{- $siteURL := urls.Parse $page.Site.BaseURL -}}
+        {{- $external := and $url.Host (or (ne $url.Host $siteURL.Host) (and $url.Scheme (ne $url.Scheme $siteURL.Scheme))) -}}
+        {{- $href := .link -}}
+        {{- if not $url.Host -}}{{- $href = partial "site-url.html" .link -}}{{- end -}}
+        <li>
+          <a class="project-index__row" href="{{ $href }}"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
+            <div class="project-index__heading">
+              <h2>{{ .name }}</h2>
+              {{ if $external }}
+                <span class="sr-only">(opens in a new tab)</span>
+              {{ end }}
+            </div>
+            <div class="project-index__detail">
+              <span class="project-index__preview" aria-hidden="true">
+                {{ with .icon }}
+                  <img src="{{ partial "site-url.html" . }}" width="176" height="176" alt="" loading="lazy" decoding="async" class="project-index__icon" />
+                {{ else }}
+                  <span class="project-index__initial">{{ substr (strings.TrimSpace (.name | plainify)) 0 1 | upper }}</span>
+                {{ end }}
+              </span>
+              {{ with .description }}<p>{{ . | plainify }}</p>{{ end }}
+            </div>
+            {{ if or .status .tag }}<div class="project-index__meta">
+              {{ with .status }}<span class="project-index__status">{{ partial "project-status.html" . }}</span>{{ end }}
+              {{ with .tag }}
+                <span class="project-index__tags" aria-label="Tags">
+                  {{ range . }}<span>#{{ . }}</span>{{ end }}
+                </span>
+              {{ end }}
+            </div>{{ end }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  {{ else }}
+    <p class="empty-state">No projects yet.</p>
+  {{ end }}
+</div>

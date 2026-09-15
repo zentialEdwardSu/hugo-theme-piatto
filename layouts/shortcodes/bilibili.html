@@ -7,8 +7,8 @@
   {{ $q = querify "aid" $vid }}
 {{ end }}
 
-<div class="w-full aspect-video">
-  <iframe class="w-full aspect-video"
+<div class="video-embed">
+  <iframe class="video-embed"
     src="//player.bilibili.com/player.html?{{ $q | safeURL }}&p=1"
     scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
   </iframe>

@@ -40,6 +40,12 @@ In the theme repository, the equivalent commands are `npm run dev`,
 `npm run check`, and `npm run build`. Hugo compiles `assets/css/main.css` with
 its Tailwind pipeline during each build.
 
+Styles are organized by component under `assets/css/`; `main.css` only imports
+the modules and configures Tailwind. Templates use shared component classes,
+and `static/css/custom.css` loads last for site overrides. See
+[Maintaining the theme styles](docs/styles.md) for module ownership, tokens,
+class conventions, and validation.
+
 ## Syntax highlighting
 
 Piatto uses class-based Chroma output so its Vitesse Light Soft and Dark Soft
@@ -102,7 +108,7 @@ the list layout used by its target section:
 [[params.navigation.tabs]]
   name = "Work"
   url = "/work/"
-  listStyle = "cards"
+  listStyle = "projects"
   dataSource = "work"
 ```
 
@@ -111,10 +117,16 @@ The available list styles are:
 - `default`: the compact, year-grouped article list used after opening an
   individual tag or category. The combined taxonomy index uses term blocks.
 - `rich`: the large three-column editorial list used by Articles.
-- `cards`: the two-column card grid used by Projects. Without `dataSource`,
-  cards are built from the section's child pages. With `dataSource = "work"`,
-  items are read from `data/work.json` and accept `name`, `description`, `link`,
-  `icon`, `status`, and `tag` fields.
+- `projects`: the large-type project directory with descriptions, text status,
+  tags, and translucent icons that slide behind descriptions on hover or keyboard
+  focus. Missing icons fall back to the first character of the project name.
+  It is the default for Projects. Without
+  `dataSource`, an explicitly selected `projects` layout reads child pages in
+  title order. With `dataSource = "work"`, it reads `data/work.json` in data order
+  using `name`, `description`, `link`, `icon`, `status`, and `tag`. The automatic
+  Projects default uses `data/projects.json` when present, otherwise child pages.
+- `cards` or `card`: the optional two-column card grid, accepting the same data
+  sources. Existing card configurations remain supported.
 
 The target section may set the style directly in its `_index.md`; this takes
 precedence over the tab setting:
@@ -130,6 +142,57 @@ listStyle: rich
 Existing `menu.main` entries remain supported and are rendered before the
 optional taxonomy links and custom tabs. Avoid declaring the same URL in both
 `menu.main` and `params.navigation.tabs`.
+
+Configured navigation paths and project icon/link paths include the deployment
+subdirectory automatically. Absolute URLs and already-prefixed Hugo permalinks
+are used as supplied.
+
+## Page navigation
+
+Internal HTML links use Swup to update the content and navigation without a
+full reload. Page URLs, metadata, browser history, anchors, and dark mode stay
+in sync. The content fades out over 120ms and in over 160ms; history navigation
+and reduced-motion preferences skip the transition. Page caching is disabled
+in Hugo development mode so edits remain visible.
+
+Client routing is enabled by default. To use ordinary browser navigation:
+
+```toml
+[params.navigation]
+  clientRouting = false
+```
+
+Add `data-no-swup` to a link or its ancestor to opt out for that link. External
+links, downloads, non-HTML files, and modified clicks keep browser behavior.
+Failed requests, requests exceeding ten seconds, and destinations without the
+Piatto containers fall back to a normal page load. Direct URLs and browsing
+without JavaScript continue to use Hugo's generated pages.
+
+Custom scripts should initialize on `piatto:page-load` and clean up on
+`piatto:before-page-replace`. Both events are dispatched on `document` with
+`event.detail.url` identifying the destination. The load event runs once on
+initial startup and after each completed page replacement. The before event
+runs while the old DOM still exists. Register listeners from a persistent
+deferred script loaded before the theme bundle, rather than an inline content script;
+content script tags are not re-executed during navigation.
+
+```js
+let dispose;
+document.addEventListener('piatto:page-load', () => {
+    dispose = initializeMyWidget(document.getElementById('content'));
+});
+document.addEventListener('piatto:before-page-replace', () => {
+    dispose?.();
+    dispose = undefined;
+});
+```
+
+The theme mounts search, code copying, the table of contents, title fitting,
+and math on each page. When search is enabled, the local Fuse library is
+available regardless of which page a visitor opens first. Search index URLs
+include the deployment subdirectory. Search text and results are restored when
+returning to the home page during the same visit. KaTeX assets load once on demand;
+Typst styles and body content move together with their page.
 
 ## SEO and generative search
 
