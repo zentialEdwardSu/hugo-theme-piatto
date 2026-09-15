@@ -261,13 +261,16 @@ function initializeTableOfContents(scope) {
     updateActiveLink();
 }
 
-function initializeArticleTitleFitting(scope) {
+function initializeTitleFitting(scope) {
     const boxes = Array.from(document.querySelectorAll('[data-fit-title]'));
     if (boxes.length === 0) {
         return;
     }
 
-    const desktop = window.matchMedia('(min-width: 48rem)');
+    const breakpoints = new Map(boxes.map((box) => {
+        const breakpoint = box.dataset.fitTitleBreakpoint || '48rem';
+        return [breakpoint, window.matchMedia(`(min-width: ${breakpoint})`)];
+    }));
     const baseSize = 100;
     const lineHeightRatio = 0.96;
     let frame = 0;
@@ -288,13 +291,14 @@ function initializeArticleTitleFitting(scope) {
                 letterSpacing: currentSpacing * (baseSize / currentSize),
             });
 
-            return { box, prepared, title };
+            const desktop = breakpoints.get(box.dataset.fitTitleBreakpoint || '48rem');
+            return { box, prepared, title, desktop };
         }).filter(Boolean);
     };
 
     const fitAll = () => {
         frame = 0;
-        preparedTitles.forEach(({ box, prepared, title }) => {
+        preparedTitles.forEach(({ box, prepared, title, desktop }) => {
             if (!desktop.matches) {
                 title.style.removeProperty('--article-title-size');
                 return;
@@ -357,7 +361,7 @@ function initializeArticleTitleFitting(scope) {
     const observer = new ResizeObserver(queueFit);
     boxes.forEach((box) => observer.observe(box));
     scope.cleanup(() => observer.disconnect());
-    scope.on(desktop, 'change', queueFit);
+    breakpoints.forEach((desktop) => scope.on(desktop, 'change', queueFit));
     document.fonts.ready.then(() => {
         if (!scope.active) return;
         prepareTitles();
@@ -540,7 +544,7 @@ export async function mountPage() {
     initializeThemeToggle(scope);
     initializeBackToTop(scope);
     initializeTableOfContents(scope);
-    initializeArticleTitleFitting(scope);
+    initializeTitleFitting(scope);
     initializeCodeCopy(scope);
     await Promise.all([initializeSearch(scope), initializeMath(scope)]);
     return scope.active;

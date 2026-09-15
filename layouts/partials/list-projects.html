@@ -21,7 +21,9 @@
         <li>
           <a class="project-index__row" href="{{ $href }}"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
             <div class="project-index__heading">
-              <h2>{{ .name }}</h2>
+              <div class="project-index__title-box" data-fit-title data-fit-title-min="32" data-fit-title-max="108" data-fit-title-breakpoint="64rem">
+                <h2 data-fit-title-text>{{ .name }}</h2>
+              </div>
               {{ if $external }}
                 <span class="sr-only">(opens in a new tab)</span>
               {{ end }}
