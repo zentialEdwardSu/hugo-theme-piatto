@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Aster Chen",
+    "url": "https://asterchen.dev/",
+    "avatar": "/images/friends/aster.svg",
+    "description": "Type, tools, and the small decisions that make a website feel made by hand."
+  },
+  {
+    "name": "Mira Okafor",
+    "url": "https://miraokafor.com/",
+    "avatar": "/images/friends/mira.svg",
+    "description": "Cities, transit maps, and the software that keeps them moving."
+  },
+  {
+    "name": "Jonas Feld",
+    "url": "https://feld.pub/",
+    "avatar": "/images/friends/jonas.svg",
+    "description": "Notes on bookbinding, PDF tooling, and keeping one site for twenty years."
+  },
+  {
+    "name": "Rin Kato",
+    "url": "https://rin.tokyo/",
+    "avatar": "/images/friends/rin.svg",
+    "description": "Photographs of Tokyo at five in the morning, and essays about walking."
+  },
+  {
+    "name": "Priya Raman",
+    "url": "https://priyaraman.in/",
+    "avatar": "/images/friends/priya.svg",
+    "description": "A working notebook on type design, Devanagari, and open-source fonts."
+  },
+  {
+    "name": "Tobias Lind",
+    "url": "https://www.lind.studio/",
+    "avatar": "/images/friends/tobias.svg",
+    "description": "Interfaces, museum signage, and the occasional piece of furniture."
+  },
+  {
+    "name": "Noor Haddad",
+    "url": "https://notes.noorhaddad.me/",
+    "avatar": "/images/friends/noor.svg",
+    "domain": "noorhaddad.me",
+    "description": "Arabic typography, archival images, and reading at a slower pace."
+  },
+  {
+    "name": "Elio Costa",
+    "url": "https://elio.works/",
+    "avatar": "/images/friends/elio.svg",
+    "description": "Maps, gardens, and a weekly letter about the independent web."
+  }
+]

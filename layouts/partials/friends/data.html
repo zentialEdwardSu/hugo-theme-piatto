@@ -1,0 +1,41 @@
+{{- /* Normalizes a friend-link data file into the shape shared by the register
+      and its ItemList structured data. Expects a dict with "page" and an
+      optional "dataSource". Returns dict "items", "source", and "found". */ -}}
+{{- $page := .page -}}
+{{- $source := .dataSource | default ($page.Params.dataSource | default "friends") -}}
+{{- $found := isset hugo.Data $source -}}
+{{- $items := slice -}}
+{{- if $found -}}
+  {{- range index hugo.Data $source -}}
+    {{- $name := .name | default "" | plainify | strings.TrimSpace -}}
+    {{- $url := .url | default .link | default "" | strings.TrimSpace -}}
+    {{- if and $name $url -}}
+      {{- $parsed := urls.Parse $url -}}
+      {{- if not $parsed.Host -}}
+        {{- warnf "Friend %q on %s needs an absolute URL; got %q" $name $page.Path $url -}}
+      {{- else -}}
+        {{- $domain := .domain | default $parsed.Host | strings.TrimPrefix "www." -}}
+        {{- $avatar := .avatar | default "" -}}
+        {{- $avatarURL := "" -}}
+        {{- $avatarAbsolute := "" -}}
+        {{- if $avatar -}}
+          {{- $avatarURL = partial "site-url.html" $avatar -}}
+          {{- $avatarAbsolute = $avatar | absURL -}}
+        {{- end -}}
+        {{- $items = $items | append (dict
+          "name" $name
+          "url" $url
+          "domain" $domain
+          "description" (.description | default "" | plainify | strings.TrimSpace)
+          "avatar" $avatarURL
+          "avatarAbsolute" $avatarAbsolute
+        ) -}}
+      {{- end -}}
+    {{- else -}}
+      {{- warnf "Friend entry on %s is missing a name or url" $page.Path -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- warnf "Friend data source %q was not found for %s" $source $page.Path -}}
+{{- end -}}
+{{- return (dict "items" $items "source" $source "found" $found) -}}

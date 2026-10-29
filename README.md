@@ -127,6 +127,11 @@ The available list styles are:
   Projects default uses `data/projects.json` when present, otherwise child pages.
 - `cards` or `card`: the optional two-column card grid, accepting the same data
   sources. Existing card configurations remain supported.
+- `friends`: the optional friend-links register. It reads `name`, `url`,
+  `avatar`, `description`, and `domain` from its data source. Rows show a square
+  avatar, the name, a short bio, and the target domain, and the whole row links
+  out. It is the default for a `friends` section when `data/friends.*` exists.
+  Set `listStyle: friends` explicitly for a page in another section.
 
 The target section may set the style directly in its `_index.md`; this takes
 precedence over the tab setting:
@@ -146,6 +151,79 @@ optional taxonomy links and custom tabs. Avoid declaring the same URL in both
 Configured navigation paths and project icon/link paths include the deployment
 subdirectory automatically. Absolute URLs and already-prefixed Hugo permalinks
 are used as supplied.
+
+### Friend links
+
+The friend-links page is opt-in: create a section, add a data file, and link it
+from navigation. Nothing is published until the section exists.
+
+Create `content/friends/_index.md`:
+
+```yaml
+---
+title: Friends
+description: Sites I read often, and the people who make them.
+listStyle: friends
+dataSource: friends
+keywords: [friend links, blogroll, independent web]
+---
+
+If you keep a site with something worth reading, [send me the address](mailto:hello@example.org) with a line about it.
+```
+
+Then add `data/friends.json`:
+
+```json
+[
+  {
+    "name": "Aster Chen",
+    "url": "https://asterchen.dev/",
+    "avatar": "/images/friends/aster.svg",
+    "description": "Type, tools, and the small decisions that make a website feel made by hand."
+  }
+]
+```
+
+`name` and an absolute `url` are required. `avatar`, `description`, and `domain`
+are optional; the avatar falls back to the name's initial, `domain` falls back
+to the URL host with `www.` removed, and data order is preserved. Entries that
+are missing a name or use a relative URL are skipped with a build warning.
+Avatars accept absolute URLs or site-relative paths such as
+`/images/friends/aster.svg`.
+
+Configure the register in page front matter, or set site-wide defaults under
+`[params.friends]`. Every option defaults to `true`:
+
+```yaml
+friends:
+  showAvatars: true
+  showDescriptions: true
+  showDomains: true
+```
+
+A page-level `friends` map replaces the site-level defaults. Markdown below the
+front matter renders under the register, which is a useful place for exchange
+instructions. If the data file is missing, the page renders a short empty state
+instead of failing the build.
+
+The page shows up in navigation only after adding a tab. Keep `dataSource` in
+both places so the rendered list and its structured data read the same file:
+
+```toml
+[[params.navigation.tabs]]
+  name = "Friends"
+  url = "/friends/"
+  listStyle = "friends"
+  dataSource = "friends"
+```
+
+The register uses the theme SEO pipeline: set `description` and `keywords` in
+front matter to control the meta description, keywords, canonical URL, Open
+Graph, and Twitter Card output. The page also emits an ordered `ItemList` of
+`WebSite` entries and points the `CollectionPage` `mainEntity` at it, so search
+engines can read the directory as a list rather than unrelated prose. Outbound
+links carry `rel="friend noopener noreferrer"`, and Hugo's sitemap includes the
+page automatically.
 
 ## Page navigation
 

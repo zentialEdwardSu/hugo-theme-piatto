@@ -69,7 +69,8 @@
   }
 
   .project-index > header,
-  .article-index > header {
+  .article-index > header,
+  .friends-index > header {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     align-items: end;
@@ -79,7 +80,8 @@
   }
 
   .project-index > header h1,
-  .article-index > header h1 {
+  .article-index > header h1,
+  .friends-index > header h1 {
     grid-column: 1 / -1;
     font-size: clamp(4rem, 10vw, 10rem);
     font-weight: 500;
@@ -92,7 +94,8 @@
   }
 
   .project-index > header > div,
-  .article-index > header > div {
+  .article-index > header > div,
+  .friends-index > header > div {
     grid-column: 4 / 10;
     max-width: 40rem;
     margin: 0;
@@ -102,12 +105,14 @@
 
   @media (max-width: 63.99rem) {
     .project-index > header,
-    .article-index > header {
+    .article-index > header,
+    .friends-index > header {
       grid-template-columns: 1fr;
     }
 
     .project-index > header > div,
-    .article-index > header > div {
+    .article-index > header > div,
+    .friends-index > header > div {
       grid-column: 1;
       margin-left: clamp(1rem, 12vw, 6rem);
     }
@@ -125,7 +130,7 @@
     height: 1rem;
   }
 
-  .article-index, .project-index, .taxonomy-index {
+  .article-index, .project-index, .taxonomy-index, .friends-index {
     max-width: var(--piatto-width-index);
   }
 }

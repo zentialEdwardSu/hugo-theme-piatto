@@ -1,0 +1,71 @@
+{{- $page := .page -}}
+{{- $data := partial "friends/data.html" (dict "page" $page "dataSource" .dataSource) -}}
+{{- $options := $page.Params.friends | default site.Params.friends | default dict -}}
+{{- $showAvatars := true -}}
+{{- $showDescriptions := true -}}
+{{- $showDomains := true -}}
+{{- if ne $options.showAvatars nil }}{{ $showAvatars = $options.showAvatars }}{{ end -}}
+{{- if ne $options.showDescriptions nil }}{{ $showDescriptions = $options.showDescriptions }}{{ end -}}
+{{- if ne $options.showDomains nil }}{{ $showDomains = $options.showDomains }}{{ end -}}
+{{- $listClass := "friends-list" -}}
+{{- if not $showAvatars }}{{ $listClass = printf "%s friends-list--no-avatars" $listClass }}{{ end -}}
+
+<div class="page-shell friends-index">
+  {{ partial "page-header.html" $page }}
+
+  {{ with $data.items }}
+    <ul class="{{ $listClass }}" aria-label="Friend links">
+      {{ range . }}
+        <li class="friends-list__item">
+          <a class="friend" href="{{ .url }}" target="_blank" rel="friend noopener noreferrer">
+            {{ if $showAvatars }}
+              <span class="friend__stamp" aria-hidden="true">
+                {{ with .avatar }}
+                  <img
+                    class="friend__avatar"
+                    src="{{ . }}"
+                    alt=""
+                    width="200"
+                    height="200"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                {{ else }}
+                  <span class="friend__initial">{{ index (split .name "") 0 }}</span>
+                {{ end }}
+              </span>
+            {{ end }}
+
+            <span class="friend__body">
+              <span class="friend__name">{{ .name }}</span>
+              {{ if and $showDescriptions .description }}
+                <span class="friend__bio">{{ .description }}</span>
+              {{ end }}
+            </span>
+
+            {{ if and $showDomains .domain }}
+              <span class="friend__address">
+                <span class="friend__domain">{{ .domain }}</span>
+                {{ partial "material-icon.html" (dict "name" "open_in_new" "class" "friend__arrow") }}
+              </span>
+            {{ end }}
+
+            <span class="sr-only">Opens in a new tab.</span>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  {{ else }}
+    <p class="friends-index__empty">No friend links yet.</p>
+    {{ if hugo.IsDevelopment }}
+      <p class="friends-index__hint">
+        Add entries to <code>data/{{ $data.source }}.json</code> or point
+        <code>dataSource</code> at another data file.
+      </p>
+    {{ end }}
+  {{ end }}
+
+  {{ with $page.Content }}
+    <div class="friends-index__note">{{ . }}</div>
+  {{ end }}
+</div>

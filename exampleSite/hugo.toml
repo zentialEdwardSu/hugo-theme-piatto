@@ -65,6 +65,12 @@ googleAnalytics = "The-G-MEASUREMENT_ID" # replace with your Google Analytics ID
       dataSource = "projects"
 
     [[params.navigation.tabs]]
+      name = "Friends"
+      url = "/friends/"
+      listStyle = "friends"
+      dataSource = "friends"
+
+    [[params.navigation.tabs]]
       name = "Me"
       url = "/me/"
 

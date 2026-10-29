@@ -17,6 +17,9 @@
   {{- else if eq $page.Section "projects" -}}
     {{- $style = "projects" -}}
     {{- if and (not $dataSource) (isset hugo.Data "projects") -}}{{- $dataSource = "projects" -}}{{- end -}}
+  {{- else if eq $page.Section "friends" -}}
+    {{- $style = "friends" -}}
+    {{- if and (not $dataSource) (isset hugo.Data "friends") -}}{{- $dataSource = "friends" -}}{{- end -}}
   {{- end -}}
 {{- end -}}
 
@@ -29,6 +32,8 @@
   {{- partial "list-rich.html" $page -}}
 {{- else if eq $style "projects" -}}
   {{- partial "list-projects.html" (dict "page" $page "dataSource" $dataSource) -}}
+{{- else if eq $style "friends" -}}
+  {{- partial "list-friends.html" (dict "page" $page "dataSource" $dataSource) -}}
 {{- else if or (eq $style "cards") (eq $style "card") -}}
   {{- partial "list-cards.html" (dict "page" $page "dataSource" $dataSource) -}}
 {{- else -}}

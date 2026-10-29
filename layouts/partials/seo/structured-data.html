@@ -23,6 +23,36 @@
 {{- with $seo.image -}}
   {{- $webpage = merge $webpage (dict "primaryImageOfPage" (dict "@type" "ImageObject" "url" .)) -}}
 {{- end -}}
+
+{{- /* Friend links become an ordered ItemList of the sites the page points to. */ -}}
+{{- $friendList := false -}}
+{{- $friendStyle := lower (.Params.listStyle | default "") -}}
+{{- $isFriendsPage := or (eq $friendStyle "friends") (eq .Type "friends") (and (eq .Section "friends") (eq $friendStyle "")) -}}
+{{- if $isFriendsPage -}}
+  {{- $friendData := partial "friends/data.html" (dict "page" . "dataSource" (.Params.dataSource | default "friends")) -}}
+  {{- with $friendData.items -}}
+    {{- $elements := slice -}}
+    {{- range $index, $friend := . -}}
+      {{- $item := dict "@type" "WebSite" "url" $friend.url "name" $friend.name -}}
+      {{- with $friend.description }}{{ $item = merge $item (dict "description" .) }}{{ end -}}
+      {{- with $friend.avatarAbsolute }}{{ $item = merge $item (dict "image" .) }}{{ end -}}
+      {{- $elements = $elements | append (dict "@type" "ListItem" "position" (add $index 1) "item" $item) -}}
+    {{- end -}}
+    {{- $listID := printf "%s#friend-links" $seo.canonical -}}
+    {{- $friendList = dict
+      "@type" "ItemList"
+      "@id" $listID
+      "name" (printf "Friend links on %s" $seo.siteTitle)
+      "description" $seo.description
+      "itemListOrder" "https://schema.org/ItemListOrderAscending"
+      "numberOfItems" (len .)
+      "itemListElement" $elements
+      "isPartOf" (dict "@id" $pageID)
+    -}}
+    {{- $webpage = merge $webpage (dict "mainEntity" (dict "@id" $listID)) -}}
+  {{- end -}}
+{{- end -}}
+
 {{- $graph := slice $website $webpage -}}
 {{- if $seo.isArticle -}}
   {{- $article := dict
@@ -43,5 +73,6 @@
   {{- with $seo.keywords }}{{ $article = merge $article (dict "keywords" (delimit . `, `)) }}{{ end -}}
   {{- $graph = $graph | append $article -}}
 {{- end -}}
+{{- if $friendList -}}{{- $graph = $graph | append $friendList -}}{{- end -}}
 {{- $schema := dict "@context" "https://schema.org" "@graph" $graph -}}
 <script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>
